@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b023a53e22d0d846b3006b9af1abce5, type: 3}
+  m_Name: Trout
+  m_EditorClassIdentifier: Assembly-CSharp::FishDefinition
+  fishID: trout
+  displayName: Trout
+  type: 1
+  revealed: {fileID: 0}
+  silhouette: {fileID: 0}
+  spawnWeight: 1
+  sizeMin: 0.5
+  sizeMax: 2
+  baseValue: 10
+  baseSpoilTime: 180
+  preferredBaits: 
+  preferredBaitAttractionMultiplier: 1.5
+  nonPreferredBaitAttractionMultiplier: 0.75
+  gridSize: {x: 1, y: 1}
+  description: 
