@@ -101,29 +101,21 @@ public class boatMovement : MonoBehaviour
 
     void movement()
     {
-
-        Vector3 forceDirection = transform.forward * moveInput * moveSpeed;
-
+       // apply forward,backward force
+       Vector3 forceDirection = transform.forward * moveInput * moveSpeed;
         rb.AddForce(forceDirection, ForceMode.Force);
-
-        rb.AddTorque(Vector3.up * turnInput * turnSpeed);
-
-        // Apply forces of torq
-
-        if (Mathf.Abs(moveInput) > 0.1f || rb.linearVelocity.magnitude > 0.5f)
-        {
-            rb.AddTorque(Vector3.up * turnInput * turnSpeed);
-        }
+        // add turning force
+        rb.AddTorque(Vector3.up * turnInput * turnSpeed, ForceMode.Force);
 
         // Cap the speed max
-
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
             rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
         }
 
-        Debug.DrawRay(transform.position, forceDirection.normalized * 5f, Color.green);
-       
+       Debug.DrawRay(transform.position, forceDirection.normalized * 5f, Color.green);
+       Debug.DrawRay(transform.position, rb.linearVelocity.normalized * 3f, Color.red);
+
     }
 
     void CheckForFishingSpot()
