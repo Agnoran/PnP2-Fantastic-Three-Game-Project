@@ -8,17 +8,24 @@ public class boatMovement : MonoBehaviour
 
     [SerializeField] Rigidbody rb;
 
+    // fishing aspect to the boat
+
+    bool isInFishing = false;
+    GameObject currentPool = null;
+
     // Boat stats
 
-    [SerializeField] int HP;
+    [SerializeField] int HP = 10;
 
-    [SerializeField] float moveSpeed;
+    [SerializeField] float moveSpeed = 15f;
 
-    [SerializeField] float maxSpeed;
+    [SerializeField] float maxSpeed = 10f;
 
-    [SerializeField] float turnSpeed;
+    [SerializeField] float turnSpeed = 50f;
 
-    [SerializeField] float drag;
+    [SerializeField] float waterDrag = 2f;
+
+    // Camera 
 
     [SerializeField] Camera boatCamera;
 
@@ -46,8 +53,8 @@ public class boatMovement : MonoBehaviour
 
         // Configure RigidBody
 
-        rb.linearDamping = drag;
-        rb.angularDamping = drag;
+        rb.linearDamping = waterDrag;
+        rb.angularDamping = waterDrag;
         rb.useGravity = false;      // No free falling through the water
 
         // locks the rotation of the X and the Y  
@@ -120,7 +127,9 @@ public class boatMovement : MonoBehaviour
 
     void CheckForFishingSpot()
     {
-        throw new NotImplementedException();
+        Debug.Log("Checking for the fishing spot: ");
     }
+
+
 
 }

@@ -434,7 +434,7 @@ MonoBehaviour:
   moveSpeed: 55
   maxSpeed: 100
   turnSpeed: 20
-  drag: 1
+  waterDrag: 2
   boatCamera: {fileID: 934517399}
   normalCameraPosition: {fileID: 0}
   topDownCameraPosition: {fileID: 0}
@@ -475,6 +475,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1369323306}
+  - component: {fileID: 1369323307}
   - component: {fileID: 1369323305}
   - component: {fileID: 1369323304}
   - component: {fileID: 1369323303}
@@ -579,6 +580,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1369323307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369323302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99a7c8d26363a384495f7a74fd2a27c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::flowingWater
+  flowSpeedX: 0.05
+  flowSpeedY: 0.03
+  enableWaveAnimation: 0
+  waveHeight: 0.3
+  waveSpeed: 1
+  waveFrequency: 2
+  deepWaterColor: {r: 0.1, g: 0.2, b: 0.4, a: 1}
+  shallowWaterColor: {r: 0.2, g: 0.5, b: 0.7, a: 1}
 --- !u!1 &1847597783
 GameObject:
   m_ObjectHideFlags: 0
