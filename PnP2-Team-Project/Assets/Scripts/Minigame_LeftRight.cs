@@ -1,9 +1,12 @@
 using UnityEngine;
 using System.Collections;
-using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class Minigame_LeftRight : Fishing
 {
+    //for instantaition inside Fishing class
+    public static Minigame_LeftRight instance;
+
     //slider renderer for hit feedback
     [SerializeField] Renderer sliderRenderer;
 
@@ -20,19 +23,24 @@ public class Minigame_LeftRight : Fishing
     //temp srlz field for how much constant HP increase. later this will be driven per-fish
     [SerializeField] int fishProgMod;
 
-    float currentHP;
+    [SerializeField] GameObject hitFieldCube;
+    [SerializeField] GameObject sliderCube;
 
-    GameObject sliderCube;
+    [SerializeField] Image fishingHP;
+
+    float currentHP;
+    
     bool sliderInTrigger;
     Color sliderOriginal;
-    float sliderMoveTimer;
-
-    
+    Vector3 sliderDir;
+    Vector3 sliCubePos;
 
     void Start()
     {
-        sliderMoveTimer = 0;
-        sliderCube = GameObject.FindWithTag("sliderCube_LeftRight");
+
+        sliCubePos = sliderCube.transform.position;
+        sliderDir = Vector3.right;
+
         //fish starts halfway up for now
         currentHP = progHP / 2;
         updateFishProgress();
@@ -48,7 +56,7 @@ public class Minigame_LeftRight : Fishing
         moveSlider();
 
         //check input
-        if (Input.GetButtonDown("Hit"))
+        if (Input.GetButtonDown("Jump"))
         {
             hitBehavior();
         }
@@ -56,22 +64,26 @@ public class Minigame_LeftRight : Fishing
         //adjust progress bar
         updateFishProgress();
 
-        
+
     }
 
     void moveSlider()
     {
-        //slider moves back and forth
-        if (sliderMoveTimer <= 100)
+        //move
+        sliCubePos = (sliderDir * sliderTravelSpeed * Time.deltaTime);
+
+
+        //check left/right
+        if (sliderCube.transform.position.x <= -50)
         {
-            sliderCube.transform.position = Vector3.right * sliderTravelSpeed * Time.deltaTime;
-            sliderMoveTimer += Time.deltaTime;
+            sliderDir = Vector3.right;
         }
-        else
+        else if (sliderCube.transform.position.x >= 50)
         {
-            sliderCube.transform.position = Vector3.left * sliderTravelSpeed * Time.deltaTime;
-            sliderMoveTimer -= Time.deltaTime;
+            sliderDir = Vector3.left;
         }
+
+
         //add base progress
         currentHP += fishProgMod;
     }
@@ -88,7 +100,7 @@ public class Minigame_LeftRight : Fishing
         }
     }
 
-
+    //updates progress bar and checks for game ending conditions
     void updateFishProgress()
     {
         fishingHP.fillAmount = (float)currentHP / progHP;
@@ -97,7 +109,7 @@ public class Minigame_LeftRight : Fishing
         if (currentHP <= 0)
         {
             WorldController.instance.ResolveFishingAttempt(false);
-        } 
+        }
         else if (currentHP >= progHP)
         {
             WorldController.instance.ResolveFishingAttempt(true);
@@ -109,7 +121,7 @@ public class Minigame_LeftRight : Fishing
     //on successful hit
     void addProgress()
     {
-        
+
         progHP += progAdd;
         updateFishProgress();
         StartCoroutine(flashGood());
@@ -122,10 +134,10 @@ public class Minigame_LeftRight : Fishing
         progHP -= progSub;
         updateFishProgress();
         StartCoroutine(flashBad());
-        
+
     }
 
-    
+
     IEnumerator flashGood()
     {
         sliderRenderer.material.color = Color.green;
