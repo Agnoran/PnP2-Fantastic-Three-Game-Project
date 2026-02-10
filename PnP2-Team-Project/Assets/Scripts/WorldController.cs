@@ -343,4 +343,13 @@ public class WorldController : MonoBehaviour
         fishToAttempt = null;   // flush the attempt
     }
 
+    public bool IsMenuOpen()
+    {
+        if (isFishing || isPaused || invOpen || catalogueOpen)
+        {
+            return true;
+        }
+        return false;
+    }
+
 }

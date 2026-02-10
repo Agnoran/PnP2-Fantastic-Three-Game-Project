@@ -2,6 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+// This script is for dragging and dropping logic
+
+// IMPORTANT::
+// I had errors about the namespaces, but I've found this to be a Visual Studio Error,
+// but it compiles in Unity
+
 public class FishItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] Image image;
@@ -19,6 +25,7 @@ public class FishItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     void Awake()
     {
+        // gets all the necessary components
         rectTransform = GetComponent<RectTransform>();
         rootCanvas = GetComponentInParent<Canvas>();
 
@@ -31,15 +38,21 @@ public class FishItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void BindFish(FishInstance bind, InventoryGridView view)
     {
+        // the fish to bind
         fish = bind;
+        // the inventory to bind to
         gridView = view;
 
+        // makes sure there's a sprite to display, this should come from the fishInstance
         if (image != null)
         {
             image.sprite = fish != null ? fish.Sprite : null;
+            // if we want to stretch the image, set this to false
             image.preserveAspect = true;
         }
 
+        // if it has a position, it's a stored fish
+        // if not it's a new fish, so use fishCaught Presenter
         isFromInventory = fish != null && fish.GridPosition.x >= 0 && fish.GridPosition.y >= 0;
     }
 
@@ -76,11 +89,13 @@ public class FishItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         // Did we drop over a slot?
         InventorySlotUI slot = null;
 
+        // if we're at a slot, set it
         if (eventData.pointerCurrentRaycast.gameObject != null)
         {
             slot = eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<InventorySlotUI>();
         }
 
+        // if we're not at a slot, put the fish back at the starting position
         if (slot == null || InventorySystem.instance == null || fish == null)
         {
             rectTransform.anchoredPosition = originalAnchoredPos;
@@ -102,6 +117,7 @@ public class FishItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
             success = InventorySystem.instance.TryToPlace(fish, targetCell);
         }
 
+        // if we couldn't place or move, set the fish back to where it was
         if (!success)
         {
             rectTransform.anchoredPosition = originalAnchoredPos;

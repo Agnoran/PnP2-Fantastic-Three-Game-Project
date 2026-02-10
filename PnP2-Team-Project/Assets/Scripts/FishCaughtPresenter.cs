@@ -1,5 +1,8 @@
 using UnityEngine;
 
+// This is a script to create a dragable fish after a catch.
+// this fish is not in the inventory yet
+
 public class FishCaughtPresenter : MonoBehaviour
 {
     [Header("UI")]
@@ -24,11 +27,14 @@ public class FishCaughtPresenter : MonoBehaviour
 
     void SpawnCaughtFish()
     {
+        // check for a world controller and a fish that was "caught"
         if (WorldController.instance == null) return;
         if (WorldController.instance.fishToAttempt == null) return;
 
+        // make sure we have a fishitem to display and a location to spawn it
         if (caughtFishPrefab == null || caughtFishParent == null) return;
 
+        // create the item at the correct spot and make a reference to it
         spawned = Instantiate(caughtFishPrefab, caughtFishParent);
 
         // IMPORTANT: we still bind it to a grid view so drag-drop works.
@@ -38,7 +44,9 @@ public class FishCaughtPresenter : MonoBehaviour
         spawned.BindFish(WorldController.instance.fishToAttempt, view);
     }
 
-    // Optional: call from an Auto-Place button
+    /// <summary>
+    /// Future Button that uses the inventory system's autoplace
+    /// </summary>
     public void AutoPlaceCaughtFish()
     {
         if (WorldController.instance == null) return;
