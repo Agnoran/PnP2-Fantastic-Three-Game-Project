@@ -151,7 +151,7 @@ public class WorldController : MonoBehaviour
     /// <summary>
     /// closes the catalogue and resets the menuActive
     /// </summary>
-    private void StateCloseCatalogue()
+    public void StateCloseCatalogue()
     {
         catalogueOpen = false;
         if (menuActive != null)
