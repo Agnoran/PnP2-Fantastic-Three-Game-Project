@@ -46,4 +46,15 @@ public class ButtonFunctions : MonoBehaviour
         if (WorldController.instance == null) return;
         WorldController.instance.CutTheLine();
     }
+
+    public void CloseInventory()
+    {
+        if (WorldController.instance == null) return;
+        WorldController.instance.StateCloseInventory();
+    }
+    public void CloseCatalogue()
+    {
+        if(WorldController.instance == null) return;
+        WorldController.instance.StateCloseCatalogue();
+    }
 }

@@ -151,7 +151,7 @@ public class WorldController : MonoBehaviour
     /// <summary>
     /// closes the catalogue and resets the menuActive
     /// </summary>
-    private void StateCloseCatalogue()
+    public void StateCloseCatalogue()
     {
         catalogueOpen = false;
         if (menuActive != null)
@@ -341,6 +341,15 @@ public class WorldController : MonoBehaviour
     {
         StateStopFishing();     // closes fishing UI + sets isFishing false
         fishToAttempt = null;   // flush the attempt
+    }
+
+    public bool IsMenuOpen()
+    {
+        if (isFishing || isPaused || invOpen || catalogueOpen)
+        {
+            return true;
+        }
+        return false;
     }
 
 }
