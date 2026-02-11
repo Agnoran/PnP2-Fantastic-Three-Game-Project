@@ -3,33 +3,33 @@ using UnityEngine.UI;
 
 public class Fishing : MonoBehaviour
 {
+    public static Fishing instance;
+
     [SerializeField] GameObject minigame_LeftRight;
     [SerializeField] GameObject minigame_Circle;
     [SerializeField] GameObject minigame_TugOfWar;
 
-    FishType fType;
+    protected FishType fType;
+    GameObject minigame;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private void Awake()
     {
-        //get fish type
-        fType = WorldController.instance.fishToAttempt.Type;
-        //decide which minigame to run
-        if (fType == FishType.Shark)
-        {
-            Instantiate(minigame_LeftRight);
-        }
-        else if (fType == FishType.Catfish)
-        {
-            Instantiate(minigame_LeftRight);
-        }
-        else
-        {
-            Instantiate(minigame_LeftRight);
-        }
+        instance = this;
+    }
 
-            
+    public void startFishing()
+    {
+        fType = WorldController.instance.fishToAttempt.Type;
+        minigame = Instantiate(minigame_LeftRight);
+        
+        //future: 
+        //get fish type, pick appropriate game
     }
 
 
+    protected void destroyGame()
+    {
+        Destroy(minigame);
+    }
 }

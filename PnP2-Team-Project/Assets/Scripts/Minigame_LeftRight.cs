@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 public class Minigame_LeftRight : Fishing
 {
     //for instantaition inside Fishing class
-    public static Minigame_LeftRight instance;
+    //public static Minigame_LeftRight minigameInstance;
 
     //how much progress a successful quicktime hit will inject into the fishing HP
     [SerializeField] int progAdd;
@@ -31,6 +31,7 @@ public class Minigame_LeftRight : Fishing
     //original slider position
     Vector2 sliderPos;
 
+
     //the image that frames the skillcheck minigame. the slider will travel along it
     [SerializeField] Image sliderBar;
     [SerializeField] GameObject targetLeft;
@@ -41,11 +42,19 @@ public class Minigame_LeftRight : Fishing
     //this changes to be the left or right target
     Vector2 v2Target;
 
-
+    //HARDCODED TEST - - -v/
+    //[SerializeField] FishType fType;
+    //HARDCODED TEST - - ^/
+    int fDifficulty;
 
     void Start()
     {
-        
+
+        //modify difficulty values
+        setDifficulty(fType);
+        sliderTravelSpeed *= fDifficulty;
+        hitField.rectTransform.sizeDelta = new Vector2(100 - (16 * fDifficulty), 100);
+
 
         //set slider components
         sliderPos = slider.rectTransform.position;
@@ -125,11 +134,15 @@ public class Minigame_LeftRight : Fishing
         //check loss/win
         if (currentHP <= 0)
         {
+            destroyGame();
             WorldController.instance.ResolveFishingAttempt(false);
+            
         }
         else if (currentHP >= progHP)
         {
+            destroyGame();
             WorldController.instance.ResolveFishingAttempt(true);
+            
         }
 
     }
@@ -166,6 +179,15 @@ public class Minigame_LeftRight : Fishing
         slider.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         slider.color = sliderColorOrig;
+    }
+
+
+    public void setDifficulty(FishType type)
+    {
+        if (type == FishType.Shark || type == FishType.Boot || type == FishType.Treasure) { fDifficulty = 4; }
+        else if (type == FishType.Eel || type == FishType.Catfish || type == FishType.Bass) { fDifficulty = 2; }
+        else {  fDifficulty = 1; }
+
     }
 
 }
