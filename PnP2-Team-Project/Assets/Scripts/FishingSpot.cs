@@ -1,0 +1,63 @@
+using UnityEngine;
+
+public class FishingSpot : MonoBehaviour
+{
+    // actual fishing spot name
+    public string spotName = "Fishing Spot";
+    // actual fish available to be fished, or catch from the spot(s)
+    [Tooltip("What types of fish can be caught here")]
+    public string[] availableFish = { "Bass", "Trout" };
+    // how rare are the fish
+    [Tooltip("How rare are catches here? 0 = common, 1 = uncommon, 2  = legendary ")]
+    [Range(0f,2f)]
+    public float rarityLevel = 0f;
+
+    public GameObject visualIndicator;
+
+
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        Collider col = GetComponent<Collider>();
+        if (col != null && !col.isTrigger)
+        {
+            Debug.LogWarning(spotName + ": Collider is not set to is Trigger! Fixing automatically. ");
+            col.isTrigger = true;
+        }
+        
+        if (!gameObject.CompareTag("FishingSpot"))
+        {
+            Debug.LogWarning(spotName + ": Tag is not 'FishingSpot'! Make sure to create and assign the tag");
+        }
+    }
+
+    public string GetRandomFish()
+    {
+        if (availableFish.Length == 0) return "Old Boot";
+        int index = Random.Range(0, availableFish.Length);
+        return availableFish[index];
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") && visualIndicator != null)
+        {
+            visualIndicator.SetActive(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player") && visualIndicator != null)
+        {
+            visualIndicator.SetActive(false);
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}

@@ -10,7 +10,9 @@ public class boatMovement : MonoBehaviour
 
     // fishing aspect to the boat
 
-    bool isInFishing = false;
+    bool isFishing = false;
+    bool isInFishingZone = false;
+
     GameObject currentPool = null;
 
     // Boat stats
@@ -23,11 +25,14 @@ public class boatMovement : MonoBehaviour
 
     [SerializeField] float turnSpeed = 50f;
 
-    [SerializeField] float waterDrag = 2f;
+    [SerializeField] float waterDrag = 3.5f;
+
+    [SerializeField] float sidewaysDragMultiplier = 5f;
 
     // Camera 
 
-    [SerializeField] Camera boatCamera;
+    [SerializeField] boatCamera cameraScript;
+    [SerializeField] GameObject fishingPromptUI;
 
     [SerializeField] Transform normalCameraPosition;
     [SerializeField] Transform topDownCameraPosition;
@@ -38,7 +43,8 @@ public class boatMovement : MonoBehaviour
    
     private float moveInput;
     private float turnInput;
-    private bool isFishing = false;
+
+    //private bool isFishing = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -48,7 +54,7 @@ public class boatMovement : MonoBehaviour
 
         // Auto-assign Rigidbody if not set
 
-        if (rb == null) 
+        if (rb == null)
             rb = GetComponent<Rigidbody>();
 
         // Configure RigidBody
@@ -63,15 +69,33 @@ public class boatMovement : MonoBehaviour
 
         // Uses the boatsCamera if none, assigned assign
 
-        if (boatCamera == null)
-            boatCamera = Camera.main;
+        if (cameraScript == null)
+            cameraScript = FindAnyObjectByType<boatCamera>();
 
-
+        if (fishingPromptUI != null)
+            fishingPromptUI.SetActive(false);
     }
+
+
+    //cameraScript = Camera.main;
+
 
     // Update is called once per frame
     void Update()
     {
+        if (isFishing)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Space))
+            {
+                StopFishing();
+
+            }
+
+            return;
+        }
+
+
+
         // Get the inputs to move Just forward, and turning side to side 
 
         moveInput = Input.GetAxis("Vertical");
@@ -87,9 +111,9 @@ public class boatMovement : MonoBehaviour
 
         // Check for the fishing input, which i think is spacebar from what ben said
 
-        if (Input.GetKeyDown(KeyCode.Space) && !isFishing)
+        if (Input.GetKeyDown(KeyCode.Space) && isInFishingZone)
         {
-            CheckForFishingSpot();
+            StartFishing();
         }
 
         // Debug to see what inputs are going through or not
@@ -101,6 +125,9 @@ public class boatMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isFishing)
+            return;
+
         movement();
         
     }
@@ -114,16 +141,96 @@ public class boatMovement : MonoBehaviour
         // add turning force
         rb.AddTorque(Vector3.up * turnInput * turnSpeed, ForceMode.Force);
 
+        // attempting to add some kind of buoyancy 
+        Vector3 sidewaysVelocity = Vector3.Dot(rb.linearVelocity, transform.right) * transform.right;
+        rb.AddForce(-sidewaysVelocity * sidewaysDragMultiplier, ForceMode.Acceleration);
+
+
         // Cap the speed max
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
             rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
         }
 
-       Debug.DrawRay(transform.position, forceDirection.normalized * 5f, Color.green);
-       Debug.DrawRay(transform.position, rb.linearVelocity.normalized * 3f, Color.red);
+       //Debug.DrawRay(transform.position, forceDirection.normalized * 5f, Color.green);
+       //Debug.DrawRay(transform.position, rb.linearVelocity.normalized * 3f, Color.red);
 
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("FishingSpot"))
+        {
+            isInFishingZone = true;
+            currentPool = other.gameObject;
+            Debug.Log("Entered Fishing Zone: " + other.gameObject.name);
+
+            if (fishingPromptUI != null)
+            {
+                fishingPromptUI.SetActive(true);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("FishingSpot"))
+        {
+            isInFishingZone = false;
+            currentPool = null;
+            Debug.Log("Left Fishing Zone: ");
+
+            if (fishingPromptUI != null)
+            {
+                fishingPromptUI.SetActive(false);
+            }
+
+        }
+    }
+
+    void StartFishing()
+    {
+        isFishing = true;
+
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        if (cameraScript != null) 
+            cameraScript.EnterFishingMode();
+
+            if (fishingPromptUI != null)
+                fishingPromptUI.SetActive(false);
+
+            Debug.Log("Started fishing at: " + currentPool?.name);
+
+    }
+
+    void StopFishing()
+    {
+        isFishing = false;
+
+        if (currentPool != null)
+        {
+            Destroy(currentPool);
+            currentPool = null;
+        }
+
+        if (cameraScript != null)
+            cameraScript.ExitFishingMode();
+
+        isInFishingZone = false;
+
+        if (fishingPromptUI != null)
+            fishingPromptUI.SetActive(false);
+
+        Debug.Log("Stopped fishing, back to movement");
+
+
+    }
+
+    
+
+            
 
     void CheckForFishingSpot()
     {
