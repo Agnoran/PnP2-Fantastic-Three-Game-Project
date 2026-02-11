@@ -230,7 +230,10 @@ public class WorldController : MonoBehaviour
             isFishing = true;
             // 
             // TODO: pass the fishToAttempt to Minigame
-            //
+
+
+            Fishing.instance.startFishing();
+            
 
             menuActive = menuFishing;
             menuActive.SetActive(true);
