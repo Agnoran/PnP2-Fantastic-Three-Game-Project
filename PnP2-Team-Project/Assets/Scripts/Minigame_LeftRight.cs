@@ -90,11 +90,11 @@ public class Minigame_LeftRight : Fishing
         // Change direction if the pointer reaches one of the points
         if (Vector2.Distance(sliderPos, v2TargetRight) < 0.1f)
         {
-            v2Target = v2TargetRight;
+            v2Target = v2TargetLeft;
         }
         else if (Vector2.Distance(sliderPos, v2TargetLeft) < 0.1f)
         {
-            v2Target = v2TargetLeft;
+            v2Target = v2TargetRight;
         }
 
 
