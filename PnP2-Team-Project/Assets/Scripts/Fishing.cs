@@ -7,20 +7,28 @@ public class Fishing : MonoBehaviour
     [SerializeField] GameObject minigame_Circle;
     [SerializeField] GameObject minigame_TugOfWar;
 
-    //ScriptableObject fish;
-    
-    //int whichGame;
+    FishType fType;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
-        //get which kind of fish
-        // fish = fishing pool fish 
-
-
+        //get fish type
+        fType = WorldController.instance.fishToAttempt.Type;
         //decide which minigame to run
-        Instantiate(minigame_LeftRight);
+        if (fType == FishType.Shark)
+        {
+            Instantiate(minigame_LeftRight);
+        }
+        else if (fType == FishType.Catfish)
+        {
+            Instantiate(minigame_LeftRight);
+        }
+        else
+        {
+            Instantiate(minigame_LeftRight);
+        }
+
+            
     }
 
 
