@@ -125,8 +125,8 @@ public class boatMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isFishing)
-            return;
+        //if (isFishing)
+        //    return;
 
         movement();
         
@@ -135,6 +135,11 @@ public class boatMovement : MonoBehaviour
 
     void movement()
     {
+        if (WorldController.instance.IsMenuOpen())
+        {
+            return;
+        }
+
        // apply forward,backward force
        Vector3 forceDirection = transform.forward * moveInput * moveSpeed;
         rb.AddForce(forceDirection, ForceMode.Force);
@@ -157,51 +162,51 @@ public class boatMovement : MonoBehaviour
 
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("FishingSpot"))
-        {
-            isInFishingZone = true;
-            currentPool = other.gameObject;
-            Debug.Log("Entered Fishing Zone: " + other.gameObject.name);
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("FishingSpot"))
+    //    {
+    //        isInFishingZone = true;
+    //        currentPool = other.gameObject;
+    //        Debug.Log("Entered Fishing Zone: " + other.gameObject.name);
 
-            if (fishingPromptUI != null)
-            {
-                fishingPromptUI.SetActive(true);
-            }
-        }
-    }
+    //        if (fishingPromptUI != null)
+    //        {
+    //            fishingPromptUI.SetActive(true);
+    //        }
+    //    }
+    //}
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("FishingSpot"))
-        {
-            isInFishingZone = false;
-            currentPool = null;
-            Debug.Log("Left Fishing Zone: ");
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.CompareTag("FishingSpot"))
+    //    {
+    //        isInFishingZone = false;
+    //        currentPool = null;
+    //        Debug.Log("Left Fishing Zone: ");
 
-            if (fishingPromptUI != null)
-            {
-                fishingPromptUI.SetActive(false);
-            }
+    //        if (fishingPromptUI != null)
+    //        {
+    //            fishingPromptUI.SetActive(false);
+    //        }
 
-        }
-    }
+    //    }
+    //}
 
     void StartFishing()
     {
         isFishing = true;
 
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        //rb.linearVelocity = Vector3.zero;
+        //rb.angularVelocity = Vector3.zero;
 
         if (cameraScript != null) 
             cameraScript.EnterFishingMode();
 
-            if (fishingPromptUI != null)
-                fishingPromptUI.SetActive(false);
+            //if (fishingPromptUI != null)
+            //    fishingPromptUI.SetActive(false);
 
-            Debug.Log("Started fishing at: " + currentPool?.name);
+            //Debug.Log("Started fishing at: " + currentPool?.name);
 
     }
 
@@ -209,21 +214,12 @@ public class boatMovement : MonoBehaviour
     {
         isFishing = false;
 
-        if (currentPool != null)
-        {
-            Destroy(currentPool);
-            currentPool = null;
-        }
-
         if (cameraScript != null)
             cameraScript.ExitFishingMode();
 
         isInFishingZone = false;
 
-        if (fishingPromptUI != null)
-            fishingPromptUI.SetActive(false);
-
-        Debug.Log("Stopped fishing, back to movement");
+        //Debug.Log("Stopped fishing, back to movement");
 
 
     }

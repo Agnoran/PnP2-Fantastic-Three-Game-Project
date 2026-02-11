@@ -216,7 +216,7 @@ public class WorldController : MonoBehaviour
 
         fishToAttempt = null;
 
-        TempFishingPool pool = currentPool.GetComponent<TempFishingPool>();
+        FishingSpot pool = currentPool.GetComponent<FishingSpot>();
         if (pool == null)
         {
             return;

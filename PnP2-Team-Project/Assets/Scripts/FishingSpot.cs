@@ -7,6 +7,7 @@ public class FishingSpot : MonoBehaviour
     // actual fish available to be fished, or catch from the spot(s)
     [Tooltip("What types of fish can be caught here")]
     public string[] availableFish = { "Bass", "Trout" };
+    [SerializeField] FishDefinition[] availableFishies;
     // how rare are the fish
     [Tooltip("How rare are catches here? 0 = common, 1 = uncommon, 2  = legendary ")]
     [Range(0f,2f)]
@@ -39,19 +40,24 @@ public class FishingSpot : MonoBehaviour
         return availableFish[index];
     }
 
+    public FishInstance GenerateFishToAttempt()
+    {
+        return null;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && visualIndicator != null)
+        if (other.CompareTag("Player"))
         {
-            visualIndicator.SetActive(true);
+            WorldController.instance.EnterPool(gameObject);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && visualIndicator != null)
+        if (other.CompareTag("Player"))
         {
-            visualIndicator.SetActive(false);
+            WorldController.instance.ExitPool();
         }
     }
 

@@ -17,7 +17,7 @@ MonoBehaviour:
   type: 8
   revealed: {fileID: 21300000, guid: 3b845a96cec770848b22b87814b152ca, type: 3}
   silhouette: {fileID: 0}
-  spawnWeight: 0.2
+  spawnWeight: 1
   sizeMin: 0.2
   sizeMax: 0.5
   baseValue: 50

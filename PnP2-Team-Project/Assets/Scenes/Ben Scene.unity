@@ -1864,10 +1864,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1004601153}
-  - component: {fileID: 1004601152}
   - component: {fileID: 1004601151}
   - component: {fileID: 1004601150}
   - component: {fileID: 1004601149}
+  - component: {fileID: 1004601154}
   m_Layer: 0
   m_Name: Temp Trout Pool
   m_TagString: Untagged
@@ -1955,20 +1955,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1004601148}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1004601152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1004601148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd65c315608c2764ca85a95f5ffd6645, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TempFishingPool
-  stubFishDefinition: {fileID: 11400000, guid: dc743e337341cf44cbd6f78f7a4b780d, type: 2}
-  playerTag: Player
 --- !u!4 &1004601153
 Transform:
   m_ObjectHideFlags: 0
@@ -1984,6 +1970,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1004601154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1004601148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bdfff5cdaa74254183276047e5393fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishingSpot
+  spotName: Fishing Spot
+  availableFish:
+  - Bass
+  - Trout
+  availableFishies:
+  - {fileID: 11400000, guid: dc743e337341cf44cbd6f78f7a4b780d, type: 2}
+  - {fileID: 11400000, guid: ed1f66af635ed0144a482c3371db2ac9, type: 2}
+  - {fileID: 11400000, guid: 8eaede95a9c12504d8ca282df7ac1ccc, type: 2}
+  - {fileID: 11400000, guid: 593cd77baa42e1d458662bfc2aa83685, type: 2}
+  rarityLevel: 0
+  visualIndicator: {fileID: 0}
 --- !u!1 &1032264840
 GameObject:
   m_ObjectHideFlags: 0
