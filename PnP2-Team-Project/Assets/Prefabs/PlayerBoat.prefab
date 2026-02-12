@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7434130592429369542}
-  - component: {fileID: 8418736114734169242}
   - component: {fileID: 7340491021899114004}
   - component: {fileID: 281998533240160103}
   - component: {fileID: 1222250012542194917}
@@ -37,21 +36,6 @@ Transform:
   - {fileID: 4745179301038572002}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8418736114734169242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6719329497882612559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50b0a8e26a7529743b101a8a69cdbb67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TempPlayerControl
-  moveSpeed: 6
-  turnSpeedDegreesPerSecond: 180
-  lockToPlane: 1
 --- !u!33 &7340491021899114004
 MeshFilter:
   m_ObjectHideFlags: 0
