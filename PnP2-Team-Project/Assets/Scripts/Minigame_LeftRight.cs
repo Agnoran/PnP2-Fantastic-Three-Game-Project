@@ -51,17 +51,12 @@ public class Minigame_LeftRight : MonoBehaviour
     //HARDCODED TEST - - ^/
     int fDifficulty;
 
-    public void SetFishType(FishType type)
-    {
-        fType = type;
-    }
     void Start()
     {
 
         //modify difficulty values
-        setDifficulty(fType);
-        sliderTravelSpeed *= fDifficulty;
-        hitField.rectTransform.sizeDelta = new Vector2(100 - (16 * fDifficulty), 100);
+        setDifficulty();
+
 
 
         //set slider components
@@ -191,12 +186,16 @@ public class Minigame_LeftRight : MonoBehaviour
     }
 
 
-    public void setDifficulty(FishType type)
+    public void setDifficulty()
     {
-        if (type == FishType.Shark || type == FishType.Boot || type == FishType.Treasure) { fDifficulty = 4; }
-        else if (type == FishType.Eel || type == FishType.Catfish || type == FishType.Bass) { fDifficulty = 2; }
-        else {  fDifficulty = 1; }
+        FishType type = WorldController.instance.fishToAttempt.Type;
+        if (type == FishType.Shark || type == FishType.Treasure) { fDifficulty = 3; }
+        else if (type == FishType.Eel || type == FishType.Catfish || type == FishType.Bass) { fDifficulty = 3; }
+        else if (type == FishType.Trout) { fDifficulty = 2; }
+        else { fDifficulty = 1; }
 
+        sliderTravelSpeed *= fDifficulty;
+        hitField.rectTransform.sizeDelta = new Vector2(100 - (16 * fDifficulty), 100);
     }
 
 }

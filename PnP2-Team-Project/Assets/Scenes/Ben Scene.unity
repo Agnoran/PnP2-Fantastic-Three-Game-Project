@@ -2238,7 +2238,7 @@ GameObject:
   - component: {fileID: 1004601149}
   - component: {fileID: 1004601154}
   m_Layer: 0
-  m_Name: Temp Trout Pool
+  m_Name: Temp Pool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2333,8 +2333,8 @@ Transform:
   m_GameObject: {fileID: 1004601148}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.25112, y: -0, z: -2.5264}
-  m_LocalScale: {x: 4.6522617, y: 0.14327726, z: 4.6522617}
+  m_LocalPosition: {x: -6.251121, y: 0, z: -2.5263991}
+  m_LocalScale: {x: 13.956785, y: 0.42983177, z: 13.956785}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2357,8 +2357,6 @@ MonoBehaviour:
   - Trout
   availableFishies:
   - {fileID: 11400000, guid: dc743e337341cf44cbd6f78f7a4b780d, type: 2}
-  - {fileID: 11400000, guid: ed1f66af635ed0144a482c3371db2ac9, type: 2}
-  - {fileID: 11400000, guid: 8eaede95a9c12504d8ca282df7ac1ccc, type: 2}
   rarityLevel: 0
   visualIndicator: {fileID: 0}
 --- !u!1 &1032264840
@@ -3114,7 +3112,7 @@ GameObject:
   - component: {fileID: 1134202721}
   - component: {fileID: 1134202720}
   m_Layer: 0
-  m_Name: Temp Trout Pool (1)
+  m_Name: Temp Pool (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3137,8 +3135,6 @@ MonoBehaviour:
   - Bass
   - Trout
   availableFishies:
-  - {fileID: 11400000, guid: dc743e337341cf44cbd6f78f7a4b780d, type: 2}
-  - {fileID: 11400000, guid: ed1f66af635ed0144a482c3371db2ac9, type: 2}
   - {fileID: 11400000, guid: 8eaede95a9c12504d8ca282df7ac1ccc, type: 2}
   rarityLevel: 0
   visualIndicator: {fileID: 0}
@@ -3231,8 +3227,8 @@ Transform:
   m_GameObject: {fileID: 1134202719}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.74888, y: 0, z: -2.5264}
-  m_LocalScale: {x: 4.6522617, y: 0.14327726, z: 4.6522617}
+  m_LocalPosition: {x: 8.74888, y: 0, z: -2.5263996}
+  m_LocalScale: {x: 9.304523, y: 0.28655452, z: 9.304523}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -4158,7 +4154,7 @@ GameObject:
   - component: {fileID: 1443613089}
   - component: {fileID: 1443613088}
   m_Layer: 0
-  m_Name: Temp Trout Pool (2)
+  m_Name: Temp Pool (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4181,9 +4177,7 @@ MonoBehaviour:
   - Bass
   - Trout
   availableFishies:
-  - {fileID: 11400000, guid: dc743e337341cf44cbd6f78f7a4b780d, type: 2}
   - {fileID: 11400000, guid: ed1f66af635ed0144a482c3371db2ac9, type: 2}
-  - {fileID: 11400000, guid: 8eaede95a9c12504d8ca282df7ac1ccc, type: 2}
   rarityLevel: 0
   visualIndicator: {fileID: 0}
 --- !u!136 &1443613089

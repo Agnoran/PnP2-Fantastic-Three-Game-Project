@@ -25,17 +25,10 @@ public class Fishing : MonoBehaviour
 
     public void startFishing()
     {
-        FishType fType = WorldController.instance.fishToAttempt.Type;
         destroyGame();
 
         minigame = Instantiate(minigame_LeftRight);
         minigame.transform.SetParent(parentCanvas, true);
-
-        Minigame_LeftRight leftRight = minigame.GetComponent<Minigame_LeftRight>();
-        if (leftRight != null)
-        {
-            leftRight.SetFishType(fType);
-        }
 
         //future: 
         //get fish type, pick appropriate game

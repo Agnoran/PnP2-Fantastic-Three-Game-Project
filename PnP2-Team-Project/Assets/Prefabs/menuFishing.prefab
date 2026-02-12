@@ -323,14 +323,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3d884ab3f497f441b9004df93761c5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Minigame_LeftRight
-  progAdd: 200
-  progSub: 200
+  progAdd: 100
+  progSub: 400
   progHP: 1000
-  fishProgMod: 0.3
+  fishProgMod: 0.1
   fishingHP: {fileID: 3421086697955392795}
   hitField: {fileID: 6766547960896717929}
   slider: {fileID: 959261805308686059}
-  sliderTravelSpeed: 300
+  sliderTravelSpeed: 800
   sliderBar: {fileID: 4149256105080272079}
   targetLeft: {fileID: 5428495951389711442}
   targetRight: {fileID: 5388095197712728398}
