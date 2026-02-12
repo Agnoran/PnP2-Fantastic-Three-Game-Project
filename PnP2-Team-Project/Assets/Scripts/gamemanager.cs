@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using JetBrains.Annotations;
 using UnityEditor;
 
-
+// written by jose
 public class gamemanager : MonoBehaviour
 {
 
@@ -61,7 +61,7 @@ public class gamemanager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetButtonDown("Attempt"))
         {
             if (activeMenu != null && activeMenu == menuPause)
             {

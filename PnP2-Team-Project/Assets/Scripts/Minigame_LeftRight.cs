@@ -3,12 +3,15 @@ using System.Collections;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 
-public class Minigame_LeftRight : Fishing
+// June Minigame
+public class Minigame_LeftRight : MonoBehaviour
 {
     //for instantaition inside Fishing class
     //public static Minigame_LeftRight minigameInstance;
 
+    [Header("Minigame Tuning")]
     //how much progress a successful quicktime hit will inject into the fishing HP
+    [Min(0)]
     [SerializeField] int progAdd;
     //how much progress an unsuccessful quicktime hit will inject into the fishing HP
     [SerializeField] int progSub;
@@ -22,6 +25,7 @@ public class Minigame_LeftRight : Fishing
     //the spot you're SUPPOSED to hit during the skillcheck
     [SerializeField] Image hitField;
 
+    [Header("Minigame Components")]
     //the image that slides along the bar for the skillcheck
     [SerializeField] Image slider;
     //how quickly the slider moves back and forth
@@ -43,10 +47,14 @@ public class Minigame_LeftRight : Fishing
     Vector2 v2Target;
 
     //HARDCODED TEST - - -v/
-    //[SerializeField] FishType fType;
+    FishType fType;
     //HARDCODED TEST - - ^/
     int fDifficulty;
 
+    public void SetFishType(FishType type)
+    {
+        fType = type;
+    }
     void Start()
     {
 
@@ -76,11 +84,12 @@ public class Minigame_LeftRight : Fishing
     // Update is called once per frame
     void Update()
     {
+        if(Time.timeScale == 0) { return; }
         //move slider back and forth
         moveSlider();
 
         //check input
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetButtonDown("Attempt"))
         {
             hitBehavior();
         }
@@ -134,14 +143,14 @@ public class Minigame_LeftRight : Fishing
         //check loss/win
         if (currentHP <= 0)
         {
-            destroyGame();
             WorldController.instance.ResolveFishingAttempt(false);
-            
+            Destroy(gameObject);
+
         }
         else if (currentHP >= progHP)
         {
-            destroyGame();
             WorldController.instance.ResolveFishingAttempt(true);
+            Destroy(gameObject);
             
         }
 

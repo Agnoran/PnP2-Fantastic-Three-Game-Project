@@ -229,4 +229,13 @@ public class InventorySystem : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
+    internal int GetTotalFishValue()
+    {
+        int total = 0;
+        foreach (FishInstance fish in storedFish)
+        {
+            total += fish.Value;
+        }
+        return total;
+    }
 }

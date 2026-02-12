@@ -83,16 +83,16 @@ public class boatMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isFishing)
-        {
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Space))
-            {
-                StopFishing();
+        //if (isFishing)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Space))
+        //    {
+        //        StopFishing();
 
-            }
+        //    }
 
-            return;
-        }
+        //    return;
+        //}
 
 
 
@@ -111,10 +111,10 @@ public class boatMovement : MonoBehaviour
 
         // Check for the fishing input, which i think is spacebar from what ben said
 
-        if (Input.GetKeyDown(KeyCode.Space) && isInFishingZone)
-        {
-            StartFishing();
-        }
+        //if (Input.GetKeyDown(KeyCode.Space) && isInFishingZone)
+        //{
+        //    StartFishing();
+        //}
 
         // Debug to see what inputs are going through or not
 
@@ -193,45 +193,45 @@ public class boatMovement : MonoBehaviour
     //    }
     //}
 
-    void StartFishing()
-    {
-        isFishing = true;
+    //void StartFishing()
+    //{
+    //    isFishing = true;
 
-        //rb.linearVelocity = Vector3.zero;
-        //rb.angularVelocity = Vector3.zero;
+    //    //rb.linearVelocity = Vector3.zero;
+    //    //rb.angularVelocity = Vector3.zero;
 
-        if (cameraScript != null) 
-            cameraScript.EnterFishingMode();
+    //    if (cameraScript != null) 
+    //        cameraScript.EnterFishingMode();
 
-            //if (fishingPromptUI != null)
-            //    fishingPromptUI.SetActive(false);
+    //        //if (fishingPromptUI != null)
+    //        //    fishingPromptUI.SetActive(false);
 
-            //Debug.Log("Started fishing at: " + currentPool?.name);
+    //        //Debug.Log("Started fishing at: " + currentPool?.name);
 
-    }
+    //}
 
-    void StopFishing()
-    {
-        isFishing = false;
+    //void StopFishing()
+    //{
+    //    isFishing = false;
 
-        if (cameraScript != null)
-            cameraScript.ExitFishingMode();
+    //    if (cameraScript != null)
+    //        cameraScript.ExitFishingMode();
 
-        isInFishingZone = false;
+    //    isInFishingZone = false;
 
-        //Debug.Log("Stopped fishing, back to movement");
+    //    //Debug.Log("Stopped fishing, back to movement");
 
 
-    }
+    //}
 
     
 
             
 
-    void CheckForFishingSpot()
-    {
-        Debug.Log("Checking for the fishing spot: ");
-    }
+    //void CheckForFishingSpot()
+    //{
+    //    Debug.Log("Checking for the fishing spot: ");
+    //}
 
 
 

@@ -24,6 +24,12 @@ public class ButtonFunctions : MonoBehaviour
     #endif
     }
 
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        WorldController.instance.StateUnpaused();
+    }
+
 
     // Temporary UI Button Code
     public void FishCaught()

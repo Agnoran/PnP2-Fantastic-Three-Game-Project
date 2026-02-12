@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using TMPro;
 
 public class WorldController : MonoBehaviour
 {
@@ -12,6 +13,15 @@ public class WorldController : MonoBehaviour
     [SerializeField] GameObject menuFishLost;
     [SerializeField] GameObject menuInventory;
     [SerializeField] GameObject menuCatalogue;
+    [SerializeField] GameObject menuWinGame;
+
+    [SerializeField] int fishValueToWinGame;
+
+    [SerializeField] boatCamera cameraScript;
+
+    Fishing game;
+
+    [SerializeField] TMP_Text fishValueTracker;
 
     public bool isPaused;
     public bool isFishing;
@@ -23,6 +33,7 @@ public class WorldController : MonoBehaviour
     public FishInstance fishToAttempt;
 
     float timeScaleOrig;
+    private bool gameWon;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -39,6 +50,11 @@ public class WorldController : MonoBehaviour
         canFish = false;
         fishToAttempt = null;
         currentPool = null;
+        gameWon = false;
+        UpdateFishValueTracker();
+
+        if (cameraScript == null)
+            cameraScript = FindAnyObjectByType<boatCamera>();
 
     }
 
@@ -91,6 +107,10 @@ public class WorldController : MonoBehaviour
             // and double checks there's a pool reference
             if(canFish && currentPool != null)
             {
+                if (menuActive != null)
+                {
+                    return;
+                }
                 if (menuActive == null)
                 {
                     StateStartFishing();
@@ -173,6 +193,7 @@ public class WorldController : MonoBehaviour
         // activates the pause menu
         menuActive = menuPause;
         menuActive.SetActive(true);
+        menuActive.transform.SetAsLastSibling(); // bring to front
     }
 
     /// <summary>
@@ -228,15 +249,16 @@ public class WorldController : MonoBehaviour
         if (fishToAttempt != null)
         {
             isFishing = true;
+            cameraScript.EnterFishingMode();
             // 
             // TODO: pass the fishToAttempt to Minigame
 
-
-            Fishing.instance.startFishing();
-            
-
             menuActive = menuFishing;
             menuActive.SetActive(true);
+
+
+            
+            Fishing.instance.startFishing();
         }
         else return;
 
@@ -247,6 +269,8 @@ public class WorldController : MonoBehaviour
     public void StateStopFishing()
     {
         isFishing = false;
+        cameraScript.ExitFishingMode();
+        Fishing.instance.destroyGame();
 
         if (menuFishing != null)
         {
@@ -291,6 +315,27 @@ public class WorldController : MonoBehaviour
             menuActive.SetActive(false);
         }
         menuActive = null;
+        UpdateFishValueTracker();
+    }
+
+    private void checkForWinGame()
+    {
+        if (InventorySystem.instance.GetTotalFishValue() >= fishValueToWinGame)
+        {
+            StateWinGame();
+        }
+    }
+
+    private void StateWinGame()
+    {
+        if(menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+        menuActive = menuWinGame;
+        menuActive.SetActive(true);
+        gameWon = true;
+
     }
 
     /// <summary>
@@ -318,17 +363,28 @@ public class WorldController : MonoBehaviour
     public void ResolveFishingAttempt(bool wasCaught)
     {
         StateStopFishing();
+        Fishing.instance.destroyGame();
         if (wasCaught)
         {
             menuActive = menuFishCaught;
             menuActive.SetActive(true);
+            UpdateFishValueTracker();
         }
         else
         {
             menuActive = menuFishLost;
             menuActive.SetActive(true);
+            UpdateFishValueTracker();
         }
     }
+
+    private void UpdateFishValueTracker()
+    {
+        int value = InventorySystem.instance.GetTotalFishValue();
+        fishValueTracker.text = "- " + (fishValueToWinGame - value).ToString();
+        checkForWinGame();
+    }
+
     public void FinishFishingResult()
     {
         if (menuActive != null)
@@ -339,6 +395,7 @@ public class WorldController : MonoBehaviour
         fishToAttempt = null;
         menuActive = null;
         isFishing = false;
+        UpdateFishValueTracker();
     }
     public void CutTheLine()
     {
@@ -348,7 +405,7 @@ public class WorldController : MonoBehaviour
 
     public bool IsMenuOpen()
     {
-        if (isFishing || isPaused || invOpen || catalogueOpen)
+        if (isFishing || isPaused || invOpen || catalogueOpen || gameWon)
         {
             return true;
         }

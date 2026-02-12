@@ -17,7 +17,7 @@ public class FishingSpot : MonoBehaviour
 
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Start is called once before the first execution of Update after the MonoBehaviour is created...!!! 
     void Start()
     {
         Collider col = GetComponent<Collider>();
@@ -33,16 +33,36 @@ public class FishingSpot : MonoBehaviour
         }
     }
 
-    public string GetRandomFish()
-    {
-        if (availableFish.Length == 0) return "Old Boot";
-        int index = Random.Range(0, availableFish.Length);
-        return availableFish[index];
-    }
+    //public string GetRandomFish()
+    //{
+    //    if (availableFish.Length == 0) return "Old Boot";
+    //    int index = Random.Range(0, availableFish.Length);
+    //    return availableFish[index];
+    //}
 
     public FishInstance GenerateFishToAttempt()
     {
-        return null;
+        int amountOfTypes = 0;
+        for (int i = 0; i < availableFishies.Length; i++)
+        {
+            amountOfTypes++;
+        }
+
+        // choice will include weight values in the future when we have them, for now it's just random
+        int choice = Random.Range(0, amountOfTypes);
+
+
+        FishDefinition chosenFish = availableFishies[choice];
+        float rolledSize = Random.Range(
+            chosenFish.SizeMin,
+            chosenFish.SizeMax
+        );
+        int rolledQuality = Random.Range(0, 100);
+        //int rolledValue = Mathf.RoundToInt(chosenFish.BaseValue * (1 + (rolledQuality / 100f)) * (1 + (rolledSize / chosenFish.SizeMax)));
+        int rolledValue = chosenFish.BaseValue;
+        float rolledSpoilTimeSeconds = chosenFish.BaseSpoilTime * (1 + (rolledQuality / 100f));
+
+        return new FishInstance(chosenFish, rolledSize, rolledQuality, rolledValue, rolledSpoilTimeSeconds);
     }
 
     private void OnTriggerEnter(Collider other)

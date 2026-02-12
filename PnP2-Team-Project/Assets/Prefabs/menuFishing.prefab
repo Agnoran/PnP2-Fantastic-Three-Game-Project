@@ -323,9 +323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3d884ab3f497f441b9004df93761c5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Minigame_LeftRight
-  minigame_LeftRight: {fileID: 0}
-  minigame_Circle: {fileID: 0}
-  minigame_TugOfWar: {fileID: 0}
   progAdd: 200
   progSub: 200
   progHP: 1000
@@ -685,7 +682,6 @@ GameObject:
   - component: {fileID: 9123542385137904316}
   - component: {fileID: 7610763752448977884}
   - component: {fileID: 4215692029797970166}
-  - component: {fileID: 2442770473162511398}
   m_Layer: 5
   m_Name: menuFishing
   m_TagString: Untagged
@@ -776,21 +772,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2442770473162511398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7624556838433503611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85fad27309de40f4a944cf599097ca5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Fishing
-  minigame_LeftRight: {fileID: 2572696710101663878}
-  minigame_Circle: {fileID: 2572696710101663878}
-  minigame_TugOfWar: {fileID: 2572696710101663878}
 --- !u!1 &8483025551310303622
 GameObject:
   m_ObjectHideFlags: 0

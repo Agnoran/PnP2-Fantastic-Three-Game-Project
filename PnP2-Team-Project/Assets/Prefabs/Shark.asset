@@ -20,7 +20,7 @@ MonoBehaviour:
   spawnWeight: 2
   sizeMin: 1
   sizeMax: 4
-  baseValue: 20
+  baseValue: 40
   baseSpoilTime: 180
   preferredBaits: 
   preferredBaitAttractionMultiplier: 1.5

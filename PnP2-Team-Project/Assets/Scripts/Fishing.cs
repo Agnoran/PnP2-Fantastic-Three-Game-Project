@@ -9,27 +9,46 @@ public class Fishing : MonoBehaviour
     [SerializeField] GameObject minigame_Circle;
     [SerializeField] GameObject minigame_TugOfWar;
 
-    protected FishType fType;
     GameObject minigame;
+    [SerializeField] Transform parentCanvas;
 
 
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
         instance = this;
     }
 
     public void startFishing()
     {
-        fType = WorldController.instance.fishToAttempt.Type;
+        FishType fType = WorldController.instance.fishToAttempt.Type;
+        destroyGame();
+
         minigame = Instantiate(minigame_LeftRight);
-        
+        minigame.transform.SetParent(parentCanvas, true);
+
+        Minigame_LeftRight leftRight = minigame.GetComponent<Minigame_LeftRight>();
+        if (leftRight != null)
+        {
+            leftRight.SetFishType(fType);
+        }
+
         //future: 
         //get fish type, pick appropriate game
     }
 
 
-    protected void destroyGame()
+    public void destroyGame()
     {
-        Destroy(minigame);
+        if (minigame != null)
+        {
+            Destroy(minigame);
+            minigame = null;
+        }
+
     }
 }
