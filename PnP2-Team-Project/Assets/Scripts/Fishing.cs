@@ -5,6 +5,8 @@ public class Fishing : MonoBehaviour
 {
     public static Fishing instance;
 
+    [SerializeField] GameObject gameToMake;
+
     [SerializeField] GameObject minigame_LeftRight;
     [SerializeField] GameObject minigame_Circle;
     [SerializeField] GameObject minigame_TugOfWar;
@@ -26,9 +28,27 @@ public class Fishing : MonoBehaviour
     public void startFishing()
     {
         destroyGame();
+        
+        //get fish
+        FishType type = WorldController.instance.fishToAttempt.Type;
 
-        minigame = Instantiate(minigame_LeftRight);
+        //call appropriate game
+        switch (type)
+        {
+            case FishType.Trout:
+                gameToMake = minigame_LeftRight;
+                break;
+            case FishType.Shark:
+                gameToMake = minigame_Circle;
+                break;
+
+        }
+        minigame = Instantiate(gameToMake);
+
+
+
         minigame.transform.SetParent(parentCanvas, true);
+        
 
         //future: 
         //get fish type, pick appropriate game
@@ -44,4 +64,14 @@ public class Fishing : MonoBehaviour
         }
 
     }
+
+
+    public float calcDifficulty()
+    {
+        float diff = 1f;
+
+
+        return diff;
+    }
+
 }

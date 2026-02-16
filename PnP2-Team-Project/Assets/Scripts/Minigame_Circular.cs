@@ -1,12 +1,4 @@
-using System;
-using System.Threading;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
-
-
 
 
 public class Minigame_Circular : MonoBehaviour
@@ -22,6 +14,11 @@ public class Minigame_Circular : MonoBehaviour
     [SerializeField] int offsetFromCenterY;
     Vector2 offsetPos;
 
+    //hitfield placement stuff
+    //UnityEngine.UI.Image field1;
+    //UnityEngine.UI.Image field2;
+    //Vector3 hFieldPos;
+    //Quaternion hFieldRot;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,19 +29,16 @@ public class Minigame_Circular : MonoBehaviour
         //place slider bar
         sliderBar.transform.position = offsetPos;
 
+        //instantiate hitfields + place along the circle
+        int randomLayout = Random.Range(0, 1);
 
-        
+        for (int i = 0; i < 4; i++)
+        {
+            UnityEngine.UI.Image tempHitField = Instantiate(hitField, rotationCenter.transform);
+            tempHitField.transform.position = offsetPos;
+            tempHitField.transform.RotateAround(rotationCenter.transform.position, sliderRotAxis, i * 90 -(45*randomLayout));
 
-
-        
-
-        //distribute hitfields
-
-        //GameObject skillCheckBox = Instantiate(hitField, r);
-        //Object original,
-        //Vector3 position,
-        //Quaternion rotation
-
+        }
 
     }
 

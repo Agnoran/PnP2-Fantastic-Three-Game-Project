@@ -29,7 +29,7 @@ public class Minigame_LeftRight : MonoBehaviour
     //the image that slides along the bar for the skillcheck
     [SerializeField] Image slider;
     //how quickly the slider moves back and forth
-    [SerializeField] int sliderTravelSpeed;
+    [SerializeField] float sliderTravelSpeed;
     //original slider color 
     Color sliderColorOrig;
     //original slider position
@@ -46,16 +46,12 @@ public class Minigame_LeftRight : MonoBehaviour
     //this changes to be the left or right target
     Vector2 v2Target;
 
-    //HARDCODED TEST - - -v/
-    FishType fType;
-    //HARDCODED TEST - - ^/
-    int fDifficulty;
 
     void Start()
     {
 
         //modify difficulty values
-        setDifficulty();
+        
 
 
 
@@ -92,6 +88,10 @@ public class Minigame_LeftRight : MonoBehaviour
         //adjust progress bar
         updateFishProgress();
     }
+
+
+
+
 
     void moveSlider()
     {
@@ -188,11 +188,10 @@ public class Minigame_LeftRight : MonoBehaviour
 
     public void setDifficulty()
     {
-        FishType type = WorldController.instance.fishToAttempt.Type;
-        if (type == FishType.Shark || type == FishType.Treasure) { fDifficulty = 3; }
-        else if (type == FishType.Eel || type == FishType.Catfish || type == FishType.Bass) { fDifficulty = 3; }
-        else if (type == FishType.Trout) { fDifficulty = 2; }
-        else { fDifficulty = 1; }
+        float fDifficulty = Fishing.instance.calcDifficulty();
+
+        
+       
 
         sliderTravelSpeed *= fDifficulty;
         hitField.rectTransform.sizeDelta = new Vector2(100 - (16 * fDifficulty), 100);
