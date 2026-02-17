@@ -4,37 +4,45 @@ using UnityEngine;
 
 public class Minigame_Loops : MonoBehaviour
 {
-    [Header("objects")]
-    [SerializeField] GameObject leftCenter;
-    [SerializeField] GameObject rightCenter;
+    [Header("pivot points")]
+    [SerializeField] UnityEngine.UI.Image middle;
+    [SerializeField] protected GameObject leftCenter;
+    [SerializeField] protected GameObject rightCenter;
+    protected GameObject targetCenter;
+    Vector2 leftOffset;
+    Vector2 rightOffset;
+    Vector3 sliderRotAxis;
+
+    [Header("play objects")]
     [SerializeField] UnityEngine.UI.Image sliderBar;
+    UnityEngine.UI.Image slider;
     [SerializeField] UnityEngine.UI.Image hitField;
-
-    [SerializeField] Vector3 sliderRotAxis;
-
     [Tooltip("how far out from the center of the circle should the slider + hitfields be ?")]
     [SerializeField] int offsetFromCenterY;
 
-    GameObject targetCenter;
-    Vector2 leftOffset;
-    Vector2 rightOffset;
+    
 
-    float timer = 0;
+    //private float rotTimer = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
         //get offset to place slider
         leftOffset = new Vector2(leftCenter.transform.position.x, leftCenter.transform.position.y + offsetFromCenterY);
         rightOffset = new Vector2(rightCenter.transform.position.x, rightCenter.transform.position.y + offsetFromCenterY);
+        sliderRotAxis = new Vector3(0, 0, 1);
 
-        //place slider bar
-        sliderBar.transform.position = leftOffset;
+        
 
         //instantiate hitfields + place along the circle
         int layoutOffset = Random.Range(0, 1);
-        setLayout(leftCenter, leftOffset, layoutOffset);
-        setLayout(rightCenter, rightOffset, layoutOffset);
+        setHitfields(leftCenter, leftOffset, layoutOffset);
+        setHitfields(rightCenter, rightOffset, layoutOffset);
+
+        //instantiate slider bar + place
+        slider = Instantiate(sliderBar, leftCenter.transform);
+        setSlider(leftCenter, leftOffset);
 
         targetCenter = leftCenter;
     }
@@ -43,8 +51,8 @@ public class Minigame_Loops : MonoBehaviour
     void Update()
     {
         //rotate slider around the layout
+        slider.transform.RotateAround(targetCenter.transform.position, sliderRotAxis, 360 * Time.deltaTime);
 
-        moveLoops(timer);
 
         //check for input
 
@@ -54,7 +62,7 @@ public class Minigame_Loops : MonoBehaviour
     }
 
 
-    void setLayout(GameObject rotationCenter, Vector2 offsetFromCenterLR, int randomOffset)
+    void setHitfields(GameObject rotationCenter, Vector2 offsetFromCenterLR, int randomOffset)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -65,29 +73,26 @@ public class Minigame_Loops : MonoBehaviour
 
     }
 
-    void moveLoops(float timer)
+    void setSlider(GameObject rotationCenter, Vector2 offsetFromCenter)
     {
-        //move the slider
-        sliderBar.transform.RotateAround(targetCenter.transform.position, sliderRotAxis, 360 * Time.deltaTime);
-
-        //increment timer
-        timer++;
-        
-        //check to swap rotation centers
-        if (timer >= 360)
-        {
-            if (targetCenter.transform.position == leftCenter.transform.position)
-            {
-                targetCenter = rightCenter;
-            }
-            else
-            {
-                targetCenter = leftCenter;
-            }
-                timer = 0;
-        }
+        slider.transform.SetParent(rotationCenter.transform.parent, false);
+        slider.transform.position = offsetFromCenter;
+        slider.transform.RotateAround(rotationCenter.transform.position, sliderRotAxis, 90 + (45 * (Random.Range(-1, 5))));
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
