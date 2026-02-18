@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 public class boatMovement : MonoBehaviour
 {
@@ -16,18 +18,19 @@ public class boatMovement : MonoBehaviour
     GameObject currentPool = null;
 
     // Boat stats
+    [Header("Boat Stats")]
 
-    [SerializeField] int HP = 10;
+    [SerializeField] int HP;
 
-    [SerializeField] float moveSpeed = 15f;
+    [SerializeField] float moveSpeed;
 
-    [SerializeField] float maxSpeed = 10f;
+    [SerializeField] float maxSpeed;
 
-    [SerializeField] float turnSpeed = 50f;
+    [SerializeField] float turnSpeed;
 
-    [SerializeField] float waterDrag = 3.5f;
+    [SerializeField] float waterDrag;
 
-    [SerializeField] float sidewaysDragMultiplier = 5f;
+    [SerializeField] float sidewaysDragMultiplier;
 
     // Camera 
 
@@ -39,12 +42,27 @@ public class boatMovement : MonoBehaviour
     [SerializeField] float cameraTransitionSpeed;
 
 
-    private int HPOrig;
-   
-    private float moveInput;
-    private float turnInput;
+    public int HPOrig;
+    public float moveInput;
+    public float turnInput;
 
-    //private bool isFishing = false;
+    // Fishing rod stats
+
+
+
+    [Header("Fishing Rod")]
+    [SerializeField] List<rodStats> rodList = new List<rodStats>();
+    [SerializeField] GameObject rodModel;
+    [SerializeField] int lineDamageOnSnap;
+
+
+
+    // Im gonna need the array for the baitList
+    [Header("Baits")]
+    [SerializeField] List<baitList> baitInventory = new List<baitList>();
+
+
+    
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -77,24 +95,12 @@ public class boatMovement : MonoBehaviour
     }
 
 
-    //cameraScript = Camera.main;
+    
 
 
     // Update is called once per frame
     void Update()
     {
-        //if (isFishing)
-        //{
-        //    if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Space))
-        //    {
-        //        StopFishing();
-
-        //    }
-
-        //    return;
-        //}
-
-
 
         // Get the inputs to move Just forward, and turning side to side 
 
@@ -109,12 +115,6 @@ public class boatMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) turnInput = 1f;
 
 
-        // Check for the fishing input, which i think is spacebar from what ben said
-
-        //if (Input.GetKeyDown(KeyCode.Space) && isInFishingZone)
-        //{
-        //    StartFishing();
-        //}
 
         // Debug to see what inputs are going through or not
 
@@ -125,8 +125,7 @@ public class boatMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        //if (isFishing)
-        //    return;
+       
 
         movement();
         
@@ -162,77 +161,7 @@ public class boatMovement : MonoBehaviour
 
     }
 
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.CompareTag("FishingSpot"))
-    //    {
-    //        isInFishingZone = true;
-    //        currentPool = other.gameObject;
-    //        Debug.Log("Entered Fishing Zone: " + other.gameObject.name);
-
-    //        if (fishingPromptUI != null)
-    //        {
-    //            fishingPromptUI.SetActive(true);
-    //        }
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.CompareTag("FishingSpot"))
-    //    {
-    //        isInFishingZone = false;
-    //        currentPool = null;
-    //        Debug.Log("Left Fishing Zone: ");
-
-    //        if (fishingPromptUI != null)
-    //        {
-    //            fishingPromptUI.SetActive(false);
-    //        }
-
-    //    }
-    //}
-
-    //void StartFishing()
-    //{
-    //    isFishing = true;
-
-    //    //rb.linearVelocity = Vector3.zero;
-    //    //rb.angularVelocity = Vector3.zero;
-
-    //    if (cameraScript != null) 
-    //        cameraScript.EnterFishingMode();
-
-    //        //if (fishingPromptUI != null)
-    //        //    fishingPromptUI.SetActive(false);
-
-    //        //Debug.Log("Started fishing at: " + currentPool?.name);
-
-    //}
-
-    //void StopFishing()
-    //{
-    //    isFishing = false;
-
-    //    if (cameraScript != null)
-    //        cameraScript.ExitFishingMode();
-
-    //    isInFishingZone = false;
-
-    //    //Debug.Log("Stopped fishing, back to movement");
-
-
-    //}
-
-    
-
-            
-
-    //void CheckForFishingSpot()
-    //{
-    //    Debug.Log("Checking for the fishing spot: ");
-    //}
-
-
+   
+    //public List<rodStats> GetRodList() { return rodList; }
 
 }
