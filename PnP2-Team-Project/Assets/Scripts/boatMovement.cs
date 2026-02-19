@@ -4,7 +4,7 @@ using System;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-public class boatMovement : MonoBehaviour
+public class boatMovement : MonoBehaviour, IDamage, 
 {
     // component for body
 
@@ -53,6 +53,7 @@ public class boatMovement : MonoBehaviour
     [Header("Fishing Rod")]
     [SerializeField] List<rodStats> rodList = new List<rodStats>();
     [SerializeField] GameObject rodModel;
+    [SerializeField] int rodListPos;
     [SerializeField] int lineDamageOnSnap;
 
 
@@ -60,6 +61,7 @@ public class boatMovement : MonoBehaviour
     // Im gonna need the array for the baitList
     [Header("Baits")]
     [SerializeField] List<baitList> baitInventory = new List<baitList>();
+    int selectedBaitIndex;
 
 
     
@@ -92,6 +94,9 @@ public class boatMovement : MonoBehaviour
 
         if (fishingPromptUI != null)
             fishingPromptUI.SetActive(false);
+
+        if (rodList.Count > 0)
+            changeRod();
     }
 
 
@@ -119,6 +124,9 @@ public class boatMovement : MonoBehaviour
         // Debug to see what inputs are going through or not
 
         Debug.Log($"Move: {moveInput}, Turn: {turnInput}, Vel: {rb.linearVelocity.magnitude}, IsKinematic: {rb.isKinematic}");
+
+        if (Input.GetKeyDown(KeyCode.Q))
+            cycleBait(-1);
 
 
     }
@@ -161,7 +169,39 @@ public class boatMovement : MonoBehaviour
 
     }
 
-   
-    //public List<rodStats> GetRodList() { return rodList; }
+    void changeRod()
+    {
+        if (rodList.Count == 0) return;
 
+    
+
+   // rodStats rod = rodList[rodListPos];
+   // lineDamageOnSnap = rod.lineDamageOnSnap;
+
+   // if(rod.rodModel != null && rodModel != null)
+    // {
+    //MeshFilter rodMF = rodModel.GetComponent<MeshFilter>();
+    //MeshRenderer rodMR = rodModel.GetComponent<MeshRenderer>();
+    //MeshFilter newMF = rodModel.GetComponent<MeshFilter>();
+
+    //if (rodMF != null && newMF != null)
+    //    rodMF.sharedMesh = newMF.sharedMesh;
+
+    // if (rodMR != null && newMR != null)
+    //    rodMR.sharedMaterial = newMR.sharedMaterial;
+
+
+    // }
+   
+    //Debug.Log("Rod: " + rod.rodName + " | " + rod.durabilityCur + " / " + rod.durabilityMax);
+    //updateBoatUI();
+    //public List<rodStats> GetRodList() { return rodList; }
+}
+
+    public void getRodStats(rodStats rod)
+    {
+        rodList.Add(rod);
+        rodListPos = rodList.Count - 1;
+        changeRod();
+    }
 }
