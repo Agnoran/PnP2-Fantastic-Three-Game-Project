@@ -63,4 +63,24 @@ public class ButtonFunctions : MonoBehaviour
         if(WorldController.instance == null) return;
         WorldController.instance.StateCloseCatalogue();
     }
+
+    // Shop Buttons
+    public void OpenGlobalShop()
+    {
+        if(WorldController.instance == null) return;
+        if (WorldController.instance.IsMenuOpen()) return;
+        if (WorldController.instance.GlobalShopUnlocked && WorldController.instance.GlobalShop != null)
+        {
+            ShopUI.instance.Open(WorldController.instance.GlobalShop);
+        }
+    }
+    public void OpenLocalShop()
+    {
+        if(WorldController.instance == null) return;
+        if (WorldController.instance.IsMenuOpen()) return;
+        if (WorldController.instance.ActiveLocalShop == null) { return; }
+
+
+        ShopUI.instance.Open(WorldController.instance.ActiveLocalShop);
+    }
 }

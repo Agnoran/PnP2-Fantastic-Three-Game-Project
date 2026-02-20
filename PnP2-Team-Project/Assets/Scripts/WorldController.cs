@@ -1,6 +1,23 @@
 using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UIElements;
+using System.Runtime.InteropServices;
+
+public enum RodStat
+{
+    lineHealthMax,
+    rodHealthMax,
+    rodDamagePower,
+    rodLuck,
+    rodControl
+}
+public enum BoatStat
+{
+    boatHealthMax,
+    boatSpeed,
+    boatManeuverability
+}
 
 public class WorldController : MonoBehaviour
 {
@@ -14,6 +31,15 @@ public class WorldController : MonoBehaviour
     [SerializeField] GameObject menuInventory;
     [SerializeField] GameObject menuCatalogue;
     [SerializeField] GameObject menuWinGame;
+
+    [SerializeField] GameObject localShopButton;
+    [SerializeField] GameObject globalShopButton;
+    [SerializeField] Shop globalShop;
+    public Shop GlobalShop => globalShop;
+    [SerializeField] bool globalShopUnlocked = false;
+    public bool GlobalShopUnlocked => globalShopUnlocked;
+    Shop activeLocalShop;
+    public Shop ActiveLocalShop => activeLocalShop;
 
     [SerializeField] int fishValueToWinGame;
 
@@ -56,6 +82,8 @@ public class WorldController : MonoBehaviour
         if (cameraScript == null)
             cameraScript = FindAnyObjectByType<boatCamera>();
 
+
+        ShowGlobalShopButton();
     }
 
     // Update is called once per frame
@@ -412,4 +440,50 @@ public class WorldController : MonoBehaviour
         return false;
     }
 
+    public void SetGlobalShopUnlocked(bool unlocked)
+    {
+        globalShopUnlocked = unlocked;
+        ShowGlobalShopButton();
+    }
+    public void ShowGlobalShopButton()
+    {
+        if (globalShopButton == null) { return; }
+
+        bool show = globalShopUnlocked && globalShop != null;
+
+        globalShopButton.SetActive(show);
+    }
+    public void showShopButton(bool show, Shop localShop)
+    {
+        if (localShopButton == null) { return; }
+
+        if (show)
+        {
+            activeLocalShop = localShop;
+
+            if (activeLocalShop == null)
+            {
+                localShopButton.SetActive(false);
+                return;
+            }
+
+            localShopButton.SetActive(true);
+            return;
+        }
+
+        if(localShop != null && localShop != activeLocalShop) { return; }
+
+        activeLocalShop = null;
+        localShopButton.SetActive(false);
+    }
+
+    internal void StateOpenShop()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void StateCloseShop()
+    {
+        throw new NotImplementedException();
+    }
 }
