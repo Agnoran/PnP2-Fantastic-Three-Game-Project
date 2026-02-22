@@ -83,4 +83,9 @@ public class ButtonFunctions : MonoBehaviour
 
         ShopUI.instance.Open(WorldController.instance.ActiveLocalShop);
     }
+    public void CloseShop()
+    {
+        if (WorldController.instance == null) return;
+        WorldController.instance.StateCloseShop();
+    }
 }

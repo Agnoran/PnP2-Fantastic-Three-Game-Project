@@ -11,7 +11,7 @@ public enum ShopItemType
     Gear,
     Upgrade
 }
-[CreateAssetMenu(menuName = "Fishing/Shop Item", fileName = "NewShopItem")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Shop Item", fileName = "NewShopItem")]
 
 public class ShopItem : ScriptableObject
 {

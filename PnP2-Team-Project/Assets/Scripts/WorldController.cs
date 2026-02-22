@@ -31,6 +31,7 @@ public class WorldController : MonoBehaviour
     [SerializeField] GameObject menuInventory;
     [SerializeField] GameObject menuCatalogue;
     [SerializeField] GameObject menuWinGame;
+    [SerializeField] GameObject menuShop;
 
     [SerializeField] GameObject localShopButton;
     [SerializeField] GameObject globalShopButton;
@@ -53,6 +54,7 @@ public class WorldController : MonoBehaviour
     public bool isFishing;
     public bool invOpen;
     public bool catalogueOpen;
+    public bool shopOpen;
 
     public bool canFish;
     public GameObject currentPool;
@@ -433,7 +435,7 @@ public class WorldController : MonoBehaviour
 
     public bool IsMenuOpen()
     {
-        if (isFishing || isPaused || invOpen || catalogueOpen || gameWon)
+        if (isFishing || isPaused || invOpen || catalogueOpen || gameWon || shopOpen)
         {
             return true;
         }
@@ -479,11 +481,30 @@ public class WorldController : MonoBehaviour
 
     internal void StateOpenShop()
     {
-        throw new NotImplementedException();
+        shopOpen = true;
+
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+
+        menuActive = menuShop;
+        if (menuActive != null)
+        {
+            menuActive.SetActive(true);
+            menuActive.transform.SetAsLastSibling();
+        }
     }
 
     internal void StateCloseShop()
     {
-        throw new NotImplementedException();
+        shopOpen = false;
+
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+
+        menuActive = null;
     }
 }
