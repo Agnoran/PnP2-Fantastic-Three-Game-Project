@@ -63,12 +63,15 @@ public class WorldController : MonoBehaviour
     float timeScaleOrig;
     private bool gameWon;
 
+    private bool startOfGame = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+
         instance = this;
         timeScaleOrig = Time.timeScale;
-
+        startOfGame = true;
         isPaused = false;
         isFishing = false;
         invOpen = false;
@@ -86,6 +89,7 @@ public class WorldController : MonoBehaviour
 
 
         ShowGlobalShopButton();
+        startOfGame = false;
     }
 
     // Update is called once per frame
@@ -411,8 +415,17 @@ public class WorldController : MonoBehaviour
     private void UpdateFishValueTracker()
     {
         int value = InventorySystem.instance.GetTotalFishValue();
-        fishValueTracker.text = "- " + (fishValueToWinGame - value).ToString();
-        checkForWinGame();
+        
+        if (startOfGame)
+        {
+            fishValueTracker.text = "- " + (fishValueToWinGame);
+        }
+        else
+        {
+            fishValueTracker.text = "- " + (fishValueToWinGame - value).ToString();
+            checkForWinGame();
+        }
+        
     }
 
     public void FinishFishingResult()
