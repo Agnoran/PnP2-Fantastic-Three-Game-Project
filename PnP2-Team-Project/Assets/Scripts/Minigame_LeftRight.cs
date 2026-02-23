@@ -11,7 +11,7 @@ public class Minigame_LeftRight : MonoBehaviour
 
     [Header("Minigame Tuning")]
     //how much progress a successful quicktime hit will inject into the fishing HP
-    [Min(0)]
+    //[Min(0)]
     [SerializeField] int progAdd;
     //how much progress an unsuccessful quicktime hit will inject into the fishing HP
     [SerializeField] int progSub;

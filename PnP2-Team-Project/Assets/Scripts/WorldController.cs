@@ -1,6 +1,23 @@
 using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UIElements;
+using System.Runtime.InteropServices;
+
+public enum RodStat
+{
+    lineHealthMax,
+    rodHealthMax,
+    rodDamagePower,
+    rodLuck,
+    rodControl
+}
+public enum BoatStat
+{
+    boatHealthMax,
+    boatSpeed,
+    boatManeuverability
+}
 
 public class WorldController : MonoBehaviour
 {
@@ -14,6 +31,16 @@ public class WorldController : MonoBehaviour
     [SerializeField] GameObject menuInventory;
     [SerializeField] GameObject menuCatalogue;
     [SerializeField] GameObject menuWinGame;
+    [SerializeField] GameObject menuShop;
+
+    [SerializeField] GameObject localShopButton;
+    [SerializeField] GameObject globalShopButton;
+    [SerializeField] Shop globalShop;
+    public Shop GlobalShop => globalShop;
+    [SerializeField] bool globalShopUnlocked = false;
+    public bool GlobalShopUnlocked => globalShopUnlocked;
+    Shop activeLocalShop;
+    public Shop ActiveLocalShop => activeLocalShop;
 
     [SerializeField] int fishValueToWinGame;
 
@@ -27,6 +54,7 @@ public class WorldController : MonoBehaviour
     public bool isFishing;
     public bool invOpen;
     public bool catalogueOpen;
+    public bool shopOpen;
 
     public bool canFish;
     public GameObject currentPool;
@@ -35,12 +63,15 @@ public class WorldController : MonoBehaviour
     float timeScaleOrig;
     private bool gameWon;
 
+    private bool startOfGame = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+
         instance = this;
         timeScaleOrig = Time.timeScale;
-
+        startOfGame = true;
         isPaused = false;
         isFishing = false;
         invOpen = false;
@@ -56,6 +87,9 @@ public class WorldController : MonoBehaviour
         if (cameraScript == null)
             cameraScript = FindAnyObjectByType<boatCamera>();
 
+
+        ShowGlobalShopButton();
+        startOfGame = false;
     }
 
     // Update is called once per frame
@@ -381,8 +415,17 @@ public class WorldController : MonoBehaviour
     private void UpdateFishValueTracker()
     {
         int value = InventorySystem.instance.GetTotalFishValue();
-        fishValueTracker.text = "- " + (fishValueToWinGame - value).ToString();
-        checkForWinGame();
+        
+        if (startOfGame)
+        {
+            fishValueTracker.text = "- " + (fishValueToWinGame);
+        }
+        else
+        {
+            fishValueTracker.text = "- " + (fishValueToWinGame - value).ToString();
+            checkForWinGame();
+        }
+        
     }
 
     public void FinishFishingResult()
@@ -405,11 +448,76 @@ public class WorldController : MonoBehaviour
 
     public bool IsMenuOpen()
     {
-        if (isFishing || isPaused || invOpen || catalogueOpen || gameWon)
+        if (isFishing || isPaused || invOpen || catalogueOpen || gameWon || shopOpen)
         {
             return true;
         }
         return false;
     }
 
+    public void SetGlobalShopUnlocked(bool unlocked)
+    {
+        globalShopUnlocked = unlocked;
+        ShowGlobalShopButton();
+    }
+    public void ShowGlobalShopButton()
+    {
+        if (globalShopButton == null) { return; }
+
+        bool show = globalShopUnlocked && globalShop != null;
+
+        globalShopButton.SetActive(show);
+    }
+    public void showShopButton(bool show, Shop localShop)
+    {
+        if (localShopButton == null) { return; }
+
+        if (show)
+        {
+            activeLocalShop = localShop;
+
+            if (activeLocalShop == null)
+            {
+                localShopButton.SetActive(false);
+                return;
+            }
+
+            localShopButton.SetActive(true);
+            return;
+        }
+
+        if(localShop != null && localShop != activeLocalShop) { return; }
+
+        activeLocalShop = null;
+        localShopButton.SetActive(false);
+    }
+
+    internal void StateOpenShop()
+    {
+        shopOpen = true;
+
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+
+        menuActive = menuShop;
+        if (menuActive != null)
+        {
+            menuActive.SetActive(true);
+            menuActive.transform.SetAsLastSibling();
+        }
+    }
+
+    internal void StateCloseShop()
+    {
+        shopOpen = false;
+
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+
+        menuActive = null;
+    }
 }
