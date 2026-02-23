@@ -1,12 +1,17 @@
 using UnityEngine;
 
 [System.Serializable]
-public class baitList
+public class Bait
 {
 
     public string baitName = "Worm";
     public int quantity = 0;
+
+    [Tooltip("Bonus catch chance")]  
     public float catchBonus = 0f;
+    public BaitType baitType = BaitType.None;
+
+
     public string[] attractsFish;
 
     public bool Use()

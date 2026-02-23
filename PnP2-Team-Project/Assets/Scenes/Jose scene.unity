@@ -452,7 +452,7 @@ MonoBehaviour:
   menuWinGame: {fileID: 1217119698}
   fishValueToWinGame: 85
   cameraScript: {fileID: 0}
-  fishValueTracker: {fileID: 358420532}
+  fishValueTracker: {fileID: 797505356}
   isPaused: 0
   isFishing: 0
   invOpen: 0
@@ -776,7 +776,7 @@ GameObject:
   - component: {fileID: 330834616}
   m_Layer: 0
   m_Name: Temp Pool
-  m_TagString: Untagged
+  m_TagString: FishingSpot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1980,7 +1980,7 @@ GameObject:
   - component: {fileID: 677653483}
   m_Layer: 0
   m_Name: Temp Pool (2)
-  m_TagString: Untagged
+  m_TagString: FishingSpot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2530,7 +2530,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 844356020}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6b9c12c7e3a08e47b87506845b1492f, type: 3}
   m_Name: 
@@ -2539,7 +2539,7 @@ MonoBehaviour:
   HP: 10
   moveSpeed: 15
   maxSpeed: 10
-  turnSpeed: 50
+  turnSpeed: 25
   waterDrag: 3.5
   sidewaysDragMultiplier: 5
   cameraScript: {fileID: 849248872}
@@ -2550,6 +2550,11 @@ MonoBehaviour:
   HPOrig: 0
   moveInput: 0
   turnInput: 0
+  rodList: []
+  rodModel: {fileID: 0}
+  rodListPos: 0
+  lineDamageOnSnap: 0
+  baitInventory: []
 --- !u!4 &844356026 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7434130592429369542, guid: 401abb92355b180478b9ef052a839ccb, type: 3}
@@ -5029,7 +5034,7 @@ GameObject:
   - component: {fileID: 1326049438}
   m_Layer: 0
   m_Name: Temp Pool (1)
-  m_TagString: Untagged
+  m_TagString: FishingSpot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5243,6 +5248,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1553102831}
   - {fileID: 38061944}
   - {fileID: 570044248}
   - {fileID: 2114766580}
@@ -5253,7 +5259,6 @@ RectTransform:
   - {fileID: 1261710507}
   - {fileID: 1726959947}
   - {fileID: 2133484801}
-  - {fileID: 1553102831}
   - {fileID: 565391211}
   - {fileID: 2025935089}
   m_Father: {fileID: 0}
