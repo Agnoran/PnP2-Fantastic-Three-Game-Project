@@ -4,9 +4,9 @@ using UnityEngine;
 public class FishingPoleUpgrade : UpgradeDefinitions
 {
 
-    [Min(0)] [SerializeField] int lineHealthMaxUpgrade = 0;
-    [Min(0)] [SerializeField] int rodHealthMaxUpgrade = 0;
-    [Min(0)] [SerializeField] int rodDamagePowerUpgrade = 0;
+    [Min(0)] [SerializeField] float lineHealthMaxUpgrade = 0;
+    [Min(0)] [SerializeField] float rodHealthMaxUpgrade = 0;
+    [Min(0)] [SerializeField] float rodDamagePowerUpgrade = 0;
     [Min(0)] [SerializeField] float rodLuckUpgrade = 0;
     [Min(0)] [SerializeField] float rodControlUpgrade = 0;
 
