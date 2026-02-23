@@ -5,15 +5,15 @@ public class FishingPoleStats : ScriptableObject
 {
     public GameObject rodModel;
 
-    [SerializeField] int lineHealthMax;
-    [SerializeField] int rodHealthMax;
-    [SerializeField] int rodDamagePower;
+    [SerializeField] float lineHealthMax;
+    [SerializeField] float rodHealthMax;
+    [SerializeField] float rodDamagePower;
     [SerializeField] float rodLuck;
     [SerializeField] float rodControl;
 
-    public int LineHealthMax => lineHealthMax;
-    public int RodHealthMax => rodHealthMax;
-    public int RodDamagePower => rodDamagePower;
+    public float LineHealthMax => lineHealthMax;
+    public float RodHealthMax => rodHealthMax;
+    public float RodDamagePower => rodDamagePower;
     public float RodLuck => rodLuck;
     public float RodControl => rodControl;
 

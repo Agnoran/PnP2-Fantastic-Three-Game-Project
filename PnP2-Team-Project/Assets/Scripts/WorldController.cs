@@ -65,6 +65,8 @@ public class WorldController : MonoBehaviour
 
     private bool startOfGame = false;
 
+    [SerializeField] GameObject player;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -147,7 +149,13 @@ public class WorldController : MonoBehaviour
                 }
                 if (menuActive == null)
                 {
-                    StateStartFishing();
+                    //if (player.GetBait() > 0)
+                    //{
+                    //    player.addBait(-1);
+                    //    StateStartFishing();
+                    //}
+;                   StateStartFishing();
+                    
                 }
             }
 
@@ -521,3 +529,6 @@ public class WorldController : MonoBehaviour
         menuActive = null;
     }
 }
+
+
+
