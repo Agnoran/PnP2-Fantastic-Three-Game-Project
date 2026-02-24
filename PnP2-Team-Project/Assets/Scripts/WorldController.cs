@@ -62,10 +62,33 @@ public class WorldController : MonoBehaviour
 
     float timeScaleOrig;
     private bool gameWon;
+    public bool GameWon => gameWon;
 
     private bool startOfGame = false;
 
     [SerializeField] GameObject player;
+
+    [SerializeField] int playerMoney = 0;
+    public int PlayerMoney => playerMoney;
+
+    public bool CanAfford(int cost)
+    {
+        return playerMoney >= cost;
+    }
+
+    public bool TrySpendMoney(int cost)
+    {
+        if (cost < 0) return false;
+        if (playerMoney < cost) return false;
+        playerMoney -= cost;
+        return true;
+    }
+
+    public void AddMoney(int amount)
+    {
+        if (amount <= 0) return;
+        playerMoney += amount;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -285,8 +308,19 @@ public class WorldController : MonoBehaviour
             return;
         }
 
-        fishToAttempt = pool.GenerateFishToAttempt();
-        
+        float rodLuck = 0f;
+
+        if (player != null)
+        {
+            playerBoat pb = player.GetComponent<playerBoat>();
+            if (pb != null && pb.getCurrRod() != null)
+            {
+                rodLuck = pb.getCurrRod().RodLuck;
+            }
+        }
+
+        fishToAttempt = pool.GenerateFishToAttempt(rodLuck);
+
 
         if (fishToAttempt != null)
         {
@@ -362,10 +396,14 @@ public class WorldController : MonoBehaviour
 
     private void checkForWinGame()
     {
-        if (InventorySystem.instance.GetTotalFishValue() >= fishValueToWinGame)
-        {
-            StateWinGame();
-        }
+        return;
+
+        // we are now winning the game by an item now
+
+        //if (InventorySystem.instance.GetTotalFishValue() >= fishValueToWinGame)
+        //{
+        //    StateWinGame();
+        //}
     }
 
     private void StateWinGame()
@@ -528,7 +566,21 @@ public class WorldController : MonoBehaviour
 
         menuActive = null;
     }
+    public void TriggerWinFromShop()
+    {
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+
+        menuActive = menuWinGame;
+
+        if (menuActive != null)
+        {
+            menuActive.SetActive(true);
+            menuActive.transform.SetAsLastSibling();
+        }
+        
+        gameWon = true;
+    }
 }
-
-
-

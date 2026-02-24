@@ -88,4 +88,11 @@ public class ButtonFunctions : MonoBehaviour
         if (WorldController.instance == null) return;
         WorldController.instance.StateCloseShop();
     }
+    public void SellAllFish()
+    {
+        if (ShopUI.instance == null)
+            return;
+
+        ShopUI.instance.SellAllFish();
+    }
 }

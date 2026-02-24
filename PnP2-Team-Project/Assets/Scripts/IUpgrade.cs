@@ -10,4 +10,6 @@ public interface IUpgrade
     // void addBait(BaitType type, int amount);
     void addBait(int amount);
     void adjustSmell(float amount);
+
+    void repairRod();
 }

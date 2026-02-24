@@ -15,8 +15,8 @@ MonoBehaviour:
   displayName: Pole Damage +10
   description: Increase your rod's damage by 10
   icon: {fileID: 0}
-  price: 175
-  quantity: 1
+  price: 550
+  quantity: 3
   allowedCategories: 00000000
   itemType: 2
   itemPrefab: {fileID: 0}

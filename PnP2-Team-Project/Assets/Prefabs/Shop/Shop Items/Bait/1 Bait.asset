@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c026681462ce5942962982aa78233f3, type: 3}
-  m_Name: BasicPoleHealthUpgrade
+  m_Name: 1 Bait
   m_EditorClassIdentifier: Assembly-CSharp::ShopItem
-  displayName: Pole Durability +100
-  description: Increase your rod's Durability by 100
+  displayName: 
+  description: 
   icon: {fileID: 0}
-  price: 450
-  quantity: 3
-  allowedCategories: 00000000
-  itemType: 2
+  price: 1
+  quantity: 200
+  allowedCategories: 
+  itemType: 0
   itemPrefab: {fileID: 0}
-  upgradeDefinition: {fileID: 11400000, guid: ac24fd1504be05e469e472f13ae68238, type: 2}
+  upgradeDefinition: {fileID: 11400000, guid: 613439012c602af4fa0a9052fa057302, type: 2}

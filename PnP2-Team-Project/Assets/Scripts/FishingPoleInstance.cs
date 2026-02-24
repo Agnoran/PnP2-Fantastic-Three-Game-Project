@@ -99,3 +99,6 @@ public class FishingPoleInstance : MonoBehaviour
         rodHealthCurrent = rodHealthMax;
     }
 }
+
+
+
