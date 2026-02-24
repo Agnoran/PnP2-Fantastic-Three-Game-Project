@@ -52,7 +52,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5756784073770807336}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 98126dfecdcb767498a363fe83d42c75, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -191,6 +191,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Minigame_Circular
   rotationCenter: {fileID: 6438392827359583179}
-  slider: {fileID: 4255833556374270458, guid: 9632f7005f3db314eafea4c40c8f05a3, type: 3}
+  circleFrame: {fileID: 517344970887663149, guid: f4dfb286487e9de4bbbccdf3de7230f2, type: 3}
   hitField: {fileID: 5778717629526623878, guid: 6c4f7b764a3206a44b1c9098d38c86e2, type: 3}
+  slider: {fileID: 4255833556374270458, guid: 9632f7005f3db314eafea4c40c8f05a3, type: 3}
+  fishAndHook: {fileID: 0}
+  gameSpeed: 0
   offsetFromCenterY: 300

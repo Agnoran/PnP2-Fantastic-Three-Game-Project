@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - sliderCube_LeftRight
+  - info-chunk-title
+  - info-chunk-value
+  - info-chunk-obfuscator
   layers:
   - Default
   - TransparentFX

@@ -8,8 +8,9 @@ public class Minigame_Circular : MonoBehaviour
 
     [Header("objects")]
     [SerializeField] UnityEngine.UI.Image rotationCenter;
-    [SerializeField] UnityEngine.UI.Image slider;
+    [SerializeField] UnityEngine.UI.Image circleFrame;
     [SerializeField] UnityEngine.UI.Image hitField;
+    [SerializeField] UnityEngine.UI.Image slider;
     UnityEngine.UI.Image sliderBar;
     Color sliderColorOrig = Color.white;
     bool inHitField;
@@ -25,6 +26,7 @@ public class Minigame_Circular : MonoBehaviour
     //this will be calculated per-fish in the fishing() script
     float difficultyMod;
     float angle;
+    float infoTimer;
 
     //AWAKE START UPDATE - - - - - - - - -v//
     private void Awake()
@@ -39,10 +41,11 @@ public class Minigame_Circular : MonoBehaviour
 
     void Start()
     {
+        infoTimer = 0;
         inHitField = false;
 
         difficultyMod = Fishing.instance.calcDifficulty();
-        angle = gameSpeed * difficultyMod / 2;
+        angle = gameSpeed * difficultyMod / 3;
 
         layoutGame();
 
@@ -56,6 +59,7 @@ public class Minigame_Circular : MonoBehaviour
         //move slider back and forth
         moveSlider();
 
+        Fishing.instance.updateGameProgress();
     }
 
 
@@ -68,6 +72,10 @@ public class Minigame_Circular : MonoBehaviour
         //get offset (radius of circle)
         offsetPos = new Vector2(rotationCenter.transform.position.x, rotationCenter.transform.position.y + offsetFromCenterY);
 
+        //instantiate circle
+        UnityEngine.UI.Image circle = Instantiate(circleFrame, rotationCenter.transform);
+        circle.rectTransform.sizeDelta = new Vector2(offsetFromCenterY*2.3f, offsetFromCenterY*2.3f);
+
         //instantiate hitfields + place along the circle
         int ranLayoutOffset = Random.Range(0, 2);
         for (int i = 0; i < 4; i++)
@@ -75,7 +83,7 @@ public class Minigame_Circular : MonoBehaviour
             //create a hitfield
             UnityEngine.UI.Image tempHitField = Instantiate(hitField, rotationCenter.transform);
             //adjust width based on difficulty
-            Vector2 adjustVec = new Vector2(160 - (16 * difficultyMod), 100);
+            Vector2 adjustVec = new Vector2(240 - (20 * difficultyMod), 140);
             tempHitField.rectTransform.sizeDelta = adjustVec;
             tempHitField.GetComponent<BoxCollider2D>().size = adjustVec;
             //place it on the circle
@@ -95,6 +103,8 @@ public class Minigame_Circular : MonoBehaviour
 
     void moveSlider()
     {
+        infoTimer += Time.deltaTime;
+
         //rotate slider around the center
         sliderBar.transform.RotateAround(rotationCenter.transform.position, rotationAxis, angle * Time.deltaTime);
 
