@@ -70,6 +70,10 @@ public class boatMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerBoat player = GetComponent<playerBoat>();
+        maxSpeed = player.maxSpeed;
+        moveSpeed = player.maxSpeed;
+
         HPOrig = HP;
 
         // Auto-assign Rigidbody if not set
@@ -172,15 +176,17 @@ public class boatMovement : MonoBehaviour
 
     }
 
-    public void ModifyMoveSpeed(float amount)
+    public void ModifyMoveSpeed()
     {
-        moveSpeed += amount;
+        moveSpeed = maxSpeed;
     }
 
     public void ModifyMaxSpeed(float amount)
     {
         maxSpeed += amount;
+        ModifyMoveSpeed();
     }
+    
 
     public void ModifyTurnSpeed(float amount)
     {

@@ -450,6 +450,11 @@ MonoBehaviour:
   menuInventory: {fileID: 1950844421}
   menuCatalogue: {fileID: 85154522}
   menuWinGame: {fileID: 1217119698}
+  menuShop: {fileID: 0}
+  localShopButton: {fileID: 0}
+  globalShopButton: {fileID: 0}
+  globalShop: {fileID: 0}
+  globalShopUnlocked: 0
   fishValueToWinGame: 85
   cameraScript: {fileID: 0}
   fishValueTracker: {fileID: 797505356}
@@ -457,6 +462,7 @@ MonoBehaviour:
   isFishing: 0
   invOpen: 0
   catalogueOpen: 0
+  shopOpen: 0
   canFish: 0
   currentPool: {fileID: 0}
   fishToAttempt:
@@ -470,6 +476,7 @@ MonoBehaviour:
     gridPosition: {x: 0, y: 0}
     rotated: 0
     flipped: 0
+  player: {fileID: 0}
 --- !u!1 &61935671
 GameObject:
   m_ObjectHideFlags: 0
@@ -2537,8 +2544,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::boatMovement
   rb: {fileID: 844356021}
   HP: 10
-  moveSpeed: 15
-  maxSpeed: 10
+  moveSpeed: 0
+  maxSpeed: 0
   turnSpeed: 25
   waterDrag: 3.5
   sidewaysDragMultiplier: 5
@@ -2560,6 +2567,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7434130592429369542, guid: 401abb92355b180478b9ef052a839ccb, type: 3}
   m_PrefabInstance: {fileID: 1087290669}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &844356027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844356020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71d13392ec94b4a498031f1ce70cd7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::playerBoat
+  maxHP: 10
+  maxSpeed: 15
+  baitCount: 15
+  boatManeuverability: 12
+  curPole: {fileID: 6191556024007687648, guid: 09031b083efb0bd469415ad28b897455, type: 3}
 --- !u!1 &849248867
 GameObject:
   m_ObjectHideFlags: 0
@@ -3520,6 +3544,9 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6719329497882612559, guid: 401abb92355b180478b9ef052a839ccb, type: 3}
       insertIndex: 1
+      addedObject: {fileID: 844356027}
+    - targetCorrespondingSourceObject: {fileID: 6719329497882612559, guid: 401abb92355b180478b9ef052a839ccb, type: 3}
+      insertIndex: 2
       addedObject: {fileID: 844356025}
   m_SourcePrefab: {fileID: 100100000, guid: 401abb92355b180478b9ef052a839ccb, type: 3}
 --- !u!1 &1114338414

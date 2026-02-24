@@ -13,11 +13,13 @@ public class playerBoat : MonoBehaviour, IUpgrade
     //Storing stats
 
     [SerializeField]float maxHP;
-    [SerializeField]float maxSpeed;
+    [SerializeField]public float maxSpeed;
     [SerializeField]int baitCount;
     [SerializeField] float boatManeuverability;
 
-    [SerializeField] FishingPoleStats curPole;      // replaced with fishingPole instance(s) array
+   // [SerializeField] int curPoleDamagePower;
+
+    [SerializeField] FishingPoleInstance curPole;      // replaced with fishingPole instance(s) array
 
 
     float origMaxHP;
@@ -25,7 +27,7 @@ public class playerBoat : MonoBehaviour, IUpgrade
     int origBaitCount;
    
 
-     FishingPoleStats origCurPole;          // replaced with fishingPole instance(s) array
+     FishingPoleInstance origCurPole;          // replaced with fishingPole instance(s) array
 
     public void adjustSmell(float amount)
     {
@@ -36,6 +38,8 @@ public class playerBoat : MonoBehaviour, IUpgrade
 
     public void upgradeBoatStat(BoatStat stat, float amount)
     {
+        boatMovement boatMovement = GetComponentInParent<boatMovement>();
+
         switch (stat)
         {
             case BoatStat.boatHealthMax:        // increasing YOUR maxHP by (amount)
@@ -43,9 +47,10 @@ public class playerBoat : MonoBehaviour, IUpgrade
                 break;
             case BoatStat.boatSpeed:
                 maxSpeed += amount;
+                boatMovement.ModifyMaxSpeed(amount);
                 break;
             case BoatStat.boatManeuverability:
-                boatManeuverability += amount;
+                boatManeuverability += amount;      // same as MaxSpeed
                 break;
 
             default:
@@ -63,26 +68,55 @@ public class playerBoat : MonoBehaviour, IUpgrade
 
     public void upgradeRodStat(RodStat stat, float amount)
     {
-        switch (stat)
-        {
-            case RodStat.lineHealthMax:
-                curPole.LineHealthMax += amount;
-                break;
-            case RodStat.ro
-        }
+        curPole.ApplyRodUpgrade(stat, amount);
 
 
     }
 
+    public void damageCurrentRod(int amount)
+    {
+        curPole.DamageRod(amount);
+    }
+
+    public void repairRod()
+    {
+        curPole.RepairRod();
+    }
+
+    public FishingPoleInstance getCurrRod()             // access curPole
+    {
+        return curPole;
+    }
+
+
+
+    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        boatMovement boatMovement = GetComponent<boatMovement>();
+        boatMovement.ModifyMaxSpeed(maxSpeed);
         
+
     }
 
     // Update is called once per frame
     void Update()
     {
         
+       
+
+    }
+
+    public void addBait(int amount)
+    {
+        baitCount += amount;
+    }
+
+    public int getCurrBait()
+    {
+        return baitCount;
     }
 }
