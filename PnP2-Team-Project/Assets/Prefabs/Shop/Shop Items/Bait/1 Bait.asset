@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c026681462ce5942962982aa78233f3, type: 3}
   m_Name: 1 Bait
   m_EditorClassIdentifier: Assembly-CSharp::ShopItem
-  displayName: 
-  description: 
+  displayName: Single Bait
+  description: Buy one single bait
   icon: {fileID: 0}
   price: 1
   quantity: 200

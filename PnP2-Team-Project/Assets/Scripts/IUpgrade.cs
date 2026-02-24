@@ -11,5 +11,5 @@ public interface IUpgrade
     void addBait(int amount);
     void adjustSmell(float amount);
 
-    void repairRod();
+    void repairRod(); 
 }

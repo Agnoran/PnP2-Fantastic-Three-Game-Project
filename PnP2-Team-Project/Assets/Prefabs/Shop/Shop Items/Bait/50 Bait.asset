@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c026681462ce5942962982aa78233f3, type: 3}
   m_Name: 50 Bait
   m_EditorClassIdentifier: Assembly-CSharp::ShopItem
-  displayName: 
+  displayName: Pack of 50 Bait
   description: 
   icon: {fileID: 0}
   price: 35

@@ -23,6 +23,11 @@ public class WorldController : MonoBehaviour
 {
     public static WorldController instance;
     [SerializeField] GameObject menuActive;
+
+    [SerializeField] GameObject menuStart;
+    [SerializeField] GameObject menuTutorialOne;
+    [SerializeField] GameObject menuTutorialTwo;
+
     [SerializeField] GameObject prevMenuActive;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuFishing;
@@ -42,13 +47,15 @@ public class WorldController : MonoBehaviour
     Shop activeLocalShop;
     public Shop ActiveLocalShop => activeLocalShop;
 
-    [SerializeField] int fishValueToWinGame;
+    int fishValueToWinGame;
 
     [SerializeField] boatCamera cameraScript;
 
     Fishing game;
 
-    [SerializeField] TMP_Text fishValueTracker;
+    [SerializeField] TMP_Text playerMoneyTracker;
+
+    [SerializeField] TMP_Text baitDisplay;
 
     public bool isPaused;
     public bool isFishing;
@@ -71,6 +78,8 @@ public class WorldController : MonoBehaviour
     [SerializeField] int playerMoney = 0;
     public int PlayerMoney => playerMoney;
 
+    playerBoat playerScript;
+
     public bool CanAfford(int cost)
     {
         return playerMoney >= cost;
@@ -81,6 +90,7 @@ public class WorldController : MonoBehaviour
         if (cost < 0) return false;
         if (playerMoney < cost) return false;
         playerMoney -= cost;
+        UpdateFishValueTracker();
         return true;
     }
 
@@ -88,6 +98,7 @@ public class WorldController : MonoBehaviour
     {
         if (amount <= 0) return;
         playerMoney += amount;
+        UpdateFishValueTracker();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -97,17 +108,17 @@ public class WorldController : MonoBehaviour
         instance = this;
         timeScaleOrig = Time.timeScale;
         startOfGame = true;
+        StateBeginGame();
         isPaused = false;
         isFishing = false;
         invOpen = false;
         catalogueOpen = false;
-        menuActive = null;
 
         canFish = false;
         fishToAttempt = null;
         currentPool = null;
         gameWon = false;
-        UpdateFishValueTracker();
+
 
         if (cameraScript == null)
             cameraScript = FindAnyObjectByType<boatCamera>();
@@ -115,6 +126,8 @@ public class WorldController : MonoBehaviour
 
         ShowGlobalShopButton();
         startOfGame = false;
+        
+        
     }
 
     // Update is called once per frame
@@ -177,7 +190,16 @@ public class WorldController : MonoBehaviour
                     //    player.addBait(-1);
                     //    StateStartFishing();
                     //}
-;                   StateStartFishing();
+                    playerBoat pb = (player != null) ? player.GetComponentInChildren<playerBoat>() : null;
+                    if (pb != null && pb.getCurrBait() > 0)
+                    {
+                        pb.addBait(-1);
+                        UpdateBaitDisplay(pb.getCurrBait());
+                        StateStartFishing();
+                    }
+
+
+;                   
                     
                 }
             }
@@ -202,6 +224,63 @@ public class WorldController : MonoBehaviour
         }
     }
 
+    private void UpdateBaitDisplay(int currBait)
+    {
+        if (baitDisplay == null) return;
+        baitDisplay.text = currBait.ToString();
+    }
+
+    private void UpdateFishValueTracker()
+    {
+        if (playerMoneyTracker == null) return;
+        playerMoneyTracker.text = playerMoney.ToString();
+    }
+
+    public void StateBeginGame()
+    {
+        isPaused = true;
+        // pauses Time
+        Time.timeScale = 0;
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+        // activates the pause menu
+        menuActive = menuStart;
+        menuActive.SetActive(true);
+        menuActive.transform.SetAsLastSibling(); // bring to front
+    }
+    public void StateTutorialOne()
+    {
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+        menuActive = menuTutorialOne;
+        menuActive.SetActive(true);
+        menuActive.transform.SetAsLastSibling();
+    }
+    public void StateTutorialTwo()
+    {
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+        menuActive = menuTutorialTwo;
+        menuActive.SetActive(true);
+        menuActive.transform.SetAsLastSibling();
+    }
+    public void StateStartGame()
+    {
+        StateUnpaused();
+        playerBoat pb = (player != null) ? player.GetComponentInChildren<playerBoat>() : null;
+        if (pb != null)
+        {
+            UpdateBaitDisplay(pb.getCurrBait());
+        }
+        UpdateFishValueTracker();
+    }
+
     /// <summary>
     /// Optional Method to manually set the canFish
     /// </summary>
@@ -214,7 +293,7 @@ public class WorldController : MonoBehaviour
     /// <summary>
     /// Sets the active menu to the catalogue and activates it
     /// </summary>
-    private void StateOpenCatalogue()
+    public void StateOpenCatalogue()
     {
         catalogueOpen = true;
         menuActive = menuCatalogue;
@@ -312,7 +391,7 @@ public class WorldController : MonoBehaviour
 
         if (player != null)
         {
-            playerBoat pb = player.GetComponent<playerBoat>();
+            playerBoat pb = player.GetComponentInChildren<playerBoat>();
             if (pb != null && pb.getCurrRod() != null)
             {
                 rodLuck = pb.getCurrRod().RodLuck;
@@ -406,7 +485,7 @@ public class WorldController : MonoBehaviour
         //}
     }
 
-    private void StateWinGame()
+    public void StateWinGame()
     {
         if(menuActive != null)
         {
@@ -415,6 +494,7 @@ public class WorldController : MonoBehaviour
         menuActive = menuWinGame;
         menuActive.SetActive(true);
         gameWon = true;
+        Time.timeScale = 0;
 
     }
 
@@ -456,22 +536,6 @@ public class WorldController : MonoBehaviour
             menuActive.SetActive(true);
             UpdateFishValueTracker();
         }
-    }
-
-    private void UpdateFishValueTracker()
-    {
-        int value = InventorySystem.instance.GetTotalFishValue();
-        
-        if (startOfGame)
-        {
-            fishValueTracker.text = "- " + (fishValueToWinGame);
-        }
-        else
-        {
-            fishValueTracker.text = "- " + (fishValueToWinGame - value).ToString();
-            checkForWinGame();
-        }
-        
     }
 
     public void FinishFishingResult()
@@ -572,15 +636,15 @@ public class WorldController : MonoBehaviour
         {
             menuActive.SetActive(false);
         }
-
         menuActive = menuWinGame;
-
-        if (menuActive != null)
-        {
-            menuActive.SetActive(true);
-            menuActive.transform.SetAsLastSibling();
-        }
-        
+        menuActive.SetActive(true);
         gameWon = true;
+    }
+    public void RefreshBaitDisplay()
+    {
+        playerBoat pb = (player != null) ? player.GetComponentInChildren<playerBoat>() : null;
+        if (pb == null) return;
+
+        UpdateBaitDisplay(pb.getCurrBait());
     }
 }

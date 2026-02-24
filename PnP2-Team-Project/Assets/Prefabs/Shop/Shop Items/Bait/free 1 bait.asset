@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c026681462ce5942962982aa78233f3, type: 3}
   m_Name: free 1 bait
   m_EditorClassIdentifier: Assembly-CSharp::ShopItem
-  displayName: 
+  displayName: Free Bait
   description: 
   icon: {fileID: 0}
   price: 0
-  quantity: 10
+  quantity: 5
   allowedCategories: 
   itemType: 0
   itemPrefab: {fileID: 0}

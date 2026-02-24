@@ -248,9 +248,17 @@ public class ShopUI : MonoBehaviour
             RefreshShop();
             return;
         }
-
+        if (targetItem.ItemType == ShopItemType.Win)
+        {
+            if (WorldController.instance != null)
+            {
+                WorldController.instance.TriggerWinFromShop();
+                return;
+            }
+        }
         if (targetItem.UpgradeDefinition != null)
         {
+            
             GameObject playerObject = targetShop.GetPlayer();
             if (playerObject != null)
             {
@@ -270,6 +278,10 @@ public class ShopUI : MonoBehaviour
         }
 
         RefreshShop();
+        if (WorldController.instance != null)
+        {
+            WorldController.instance.RefreshBaitDisplay();
+        }
 
         if (WorldController.instance.GameWon)
         {

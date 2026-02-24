@@ -8,6 +8,7 @@ public class WinItem : UpgradeDefinitions
         if (WorldController.instance == null)
             return;
 
-        WorldController.instance.TriggerWinFromShop();
+        WorldController.instance.StateWinGame();
+        return;
     }
 }
