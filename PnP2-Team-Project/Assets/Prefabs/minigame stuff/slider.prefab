@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 4255833556374270458}
   - component: {fileID: 391747338272290163}
   - component: {fileID: 3330101168950902403}
-  - component: {fileID: -6535660540940041208}
+  - component: {fileID: -6810876659857875640}
   m_Layer: 5
-  m_Name: slider (placeholder)
+  m_Name: slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,7 +151,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-6535660540940041208
+--- !u!114 &-6810876659857875640
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,7 +163,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c88ba315c2baf284a90fc0e046154b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitField
-  rotationCenter: {fileID: 0}
-  slider: {fileID: 0}
-  hitField: {fileID: 0}
-  offsetFromCenterY: 0

@@ -7,7 +7,6 @@ public class Minigame_Circular : MonoBehaviour
     public static Minigame_Circular instance;
 
     [Header("objects")]
-    [SerializeField] UnityEngine.UI.Image rotationCenter;
     [SerializeField] UnityEngine.UI.Image circleFrame;
     [SerializeField] UnityEngine.UI.Image hitField;
     [SerializeField] UnityEngine.UI.Image slider;
@@ -15,25 +14,28 @@ public class Minigame_Circular : MonoBehaviour
     Color sliderColorOrig = Color.white;
     bool inHitField;
 
-    [Header("numbers")]
+
+    [Header("game layout numbers")]
     [Tooltip("how quickly the slider will rotate around the circle BEFORE difficulty modifier")]
     [SerializeField] float gameSpeed;
     [Tooltip("radius of minigame circle - this affects slider + hitfields placement")]
     [SerializeField] int offsetFromCenterY;
     Vector2 offsetPos;
     Vector3 rotationAxis = new Vector3(0, 0, 1);
+    Vector2 rotationCenter;
 
     //this will be calculated per-fish in the fishing() script
     float difficultyMod;
     float angle;
-    float infoTimer;
+
+
 
     //AWAKE START UPDATE - - - - - - - - -v//
-    private void Awake()
+    public void Awake()
     {
         if (instance != null && instance != this)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
             return;
         }
         instance = this;
@@ -41,7 +43,7 @@ public class Minigame_Circular : MonoBehaviour
 
     void Start()
     {
-        infoTimer = 0;
+        //infoTimer = 0;
         inHitField = false;
 
         difficultyMod = Fishing.instance.calcDifficulty();
@@ -59,21 +61,22 @@ public class Minigame_Circular : MonoBehaviour
         //move slider back and forth
         moveSlider();
 
-        Fishing.instance.updateGameProgress();
     }
 
 
     //OTHER METHODS - - - - - - - -v//
     void layoutGame()
     {
+
+
         //move minigame to the spot in the canvas
-        rotationCenter.transform.position = Fishing.instance.minigamePosition.transform.position;
+        rotationCenter = Fishing.instance.minigamePosition.transform.position;
 
         //get offset (radius of circle)
-        offsetPos = new Vector2(rotationCenter.transform.position.x, rotationCenter.transform.position.y + offsetFromCenterY);
+        offsetPos = new Vector2(rotationCenter.x, rotationCenter.y + offsetFromCenterY);
 
         //instantiate circle
-        UnityEngine.UI.Image circle = Instantiate(circleFrame, rotationCenter.transform);
+        UnityEngine.UI.Image circle = Instantiate(circleFrame, Fishing.instance.minigamePosition.transform);
         circle.rectTransform.sizeDelta = new Vector2(offsetFromCenterY*2.3f, offsetFromCenterY*2.3f);
 
         //instantiate hitfields + place along the circle
@@ -81,7 +84,7 @@ public class Minigame_Circular : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             //create a hitfield
-            UnityEngine.UI.Image tempHitField = Instantiate(hitField, rotationCenter.transform);
+            UnityEngine.UI.Image tempHitField = Instantiate(hitField, Fishing.instance.minigamePosition.transform);
             //adjust width based on difficulty
             Vector2 adjustVec = new Vector2(240 - (20 * difficultyMod), 140);
             tempHitField.rectTransform.sizeDelta = adjustVec;
@@ -89,34 +92,27 @@ public class Minigame_Circular : MonoBehaviour
             //place it on the circle
             tempHitField.transform.position = offsetPos;
             //rotate it to distribute around the circle
-            tempHitField.transform.RotateAround(rotationCenter.transform.position, rotationAxis, i * 90 - (45 * ranLayoutOffset));
+            tempHitField.transform.RotateAround(rotationCenter, rotationAxis, i * 90 - (45 * ranLayoutOffset));
         }
 
         //place slider bar on the circle
-        sliderBar = Instantiate(slider, rotationCenter.transform);
+        sliderBar = Instantiate(slider, Fishing.instance.minigamePosition.transform);
         sliderBar.transform.position = offsetPos;
 
-        //place the fish at the start and update the UI
-        //currentHP = progHP / 2;
-        //updateFishProgress();
     }
 
     void moveSlider()
     {
-        infoTimer += Time.deltaTime;
+        //infoTimer += Time.deltaTime;
 
         //rotate slider around the center
-        sliderBar.transform.RotateAround(rotationCenter.transform.position, rotationAxis, angle * Time.deltaTime);
+        sliderBar.transform.RotateAround(rotationCenter, rotationAxis, angle * Time.deltaTime);
 
         //check input
         if (Input.GetButtonDown("Attempt"))
         {
-            onHit();
+            onAttempt();
         }
-
-
-        //add base progress
-        //currentHP += fishProgMod;
     }
 
     public void toggleBool(bool b)
@@ -124,44 +120,21 @@ public class Minigame_Circular : MonoBehaviour
         inHitField = b;
     }
 
-    void onHit()
+    void onAttempt()
     {
         
         if (inHitField)
         {
-
-            addProgress();
-            
+            Debug.Log("Hit");
+            Fishing.instance.addProgress();
+            StartCoroutine(flashGood());
         }
         else
         {
-            subProgress();
-            
+            Debug.Log("Miss");
+            Fishing.instance.subProgress();
+            StartCoroutine(flashBad());
         }
-
-    }
-
-
-
-
-
-    //on successful hit
-    void addProgress()
-    {
-        Debug.Log("Hit");
-        //currentHP += progAdd;
-        updateFishProgress();
-        StartCoroutine(flashGood());
-
-    }
-
-    //on unsuccessful hit
-    void subProgress()
-    {
-        Debug.Log("Miss");
-        //currentHP -= progSub;
-        updateFishProgress();
-        StartCoroutine(flashBad());
 
     }
 
@@ -173,32 +146,10 @@ public class Minigame_Circular : MonoBehaviour
     }
     IEnumerator flashBad()
     {
-        slider.color = Color.red;
+        sliderBar.color = Color.darkRed;
         yield return new WaitForSeconds(0.1f);
-        slider.color = sliderColorOrig;
+        sliderBar.color = sliderColorOrig;
     }
 
 
-    //updates progress bar and checks for game ending conditions
-    void updateFishProgress()
-    {
-
-        //fishingHP.fillAmount = (float)currentHP / progHP;
-
-        ////check loss/win
-        //if (currentHP <= 0)
-        //{
-        //    WorldController.instance.ResolveFishingAttempt(false);
-        //    Destroy(gameObject);
-
-        //}
-        //else if (currentHP >= progHP)
-        //{
-        //    WorldController.instance.ResolveFishingAttempt(true);
-        //    Destroy(gameObject);
-
-        //}
-
-
-    }
 }

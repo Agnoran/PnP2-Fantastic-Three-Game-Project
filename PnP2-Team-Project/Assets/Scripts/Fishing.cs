@@ -2,35 +2,66 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using static UnityEngine.Audio.GeneratorInstance;
 
 public class Fishing : MonoBehaviour
 {
     public static Fishing instance;
 
-    [Header("UI stuff")]
     [SerializeField] Canvas parentCanvas;
-    [SerializeField] UnityEngine.UI.Image fish;
     [SerializeField] public GameObject minigamePosition;
 
-    [Header("Info Section")]
-    [SerializeField] public GameObject infoPos;
-    [SerializeField] public InGameInfo_Chunk infoEntry;
-    [SerializeField] bool knownFish;
-    List<InGameInfo_Chunk> fishInfoChunks;
-    Vector2 infoListPosition;
-    int infoListIndex;
-
     [Header("Minigames")]
-    [SerializeField] GameObject fishingMinigame;
+    [SerializeField] GameObject[] FMG_array;
     [SerializeField] GameObject cutTheLine;
+    [SerializeField] GameObject onLossCutLinePos;
+    Vector3 originalCutLinePos;
+    Vector3 originalCutLineScale;
     GameObject minigame;
 
+
+
+
+
+    [Header("Fish")]
+    [SerializeField] UnityEngine.UI.Image fishHookParent;
+    [SerializeField] UnityEngine.UI.Image fishWinPosition;
+    [SerializeField] UnityEngine.UI.Image fishLosePosition;
+    float winPositionY;
+    float losePositionY;
+    float fhPositionY;
+    float fhPositionX;
+
+
+
+    [Header("Game Stats")]
+    [SerializeField] float baseAddVal;
+    [SerializeField] float baseSubVal;
+    [Tooltip("purchased upgrade")]
+    [SerializeField] float testRodPowerUpgrade;
+    [Tooltip("purchased upgrade")]
+    [SerializeField] float testRodControlUpgrade;
+    [Tooltip("base value")]
+    [SerializeField] int baseRodPower;
+    [Tooltip("base value")]
+    [SerializeField] int baseRodControl;
+    //calculated on startup:
+    // - affects successful "attempt" 
+    float rodPower;
+    // - stronger rod reduces how much fish passively goes down
+    float rodControl;
+    //this is how much the fish will passively move down  
+    float baseMoveVal;
+    Vector3 baseMoveVec3;
+    //how much "attempt" will raise/lower fish
+    float addProgressVal;
+    float subProgressVal;
+
+
     [Header("Hard coded fish for testing difficulties")]
-    [SerializeField] FishType type;
-    FishInstance fishinst;
+    [SerializeField] FishType testType;
+    [SerializeField] float testSize;
+    FishType type;
+    float fishSize;
 
     private void Awake()
     {
@@ -42,27 +73,23 @@ public class Fishing : MonoBehaviour
         instance = this;
     }
 
-    public void startFishing()
+    private void Start()
     {
-        //ensure single instance
-        destroyGame();
+        //image+position stuff
+        setupUI();
 
-        minigame = fishingMinigame;
+        //calculate stats to drive fish+rod during gameplay
+        calcGameStats();
 
-        //get fish
-        //type = WorldController.instance.fishToAttempt.Type;
 
         //prepare stats to reveal during game progress
-        prepFishInfo();
-
-
-        //run the fishing minigame
-        minigame = Instantiate(fishingMinigame);
-
-
+        //prepFishInfo();
     }
 
-
+    private void Update()
+    {
+        baseMovement();
+    }
 
     public void destroyGame()
     {
@@ -74,31 +101,132 @@ public class Fishing : MonoBehaviour
 
     }
 
+    public void startFishing()
+    {
+        //ensure single instance
+        destroyGame();
+        //run the fishing minigame
+        minigame = Instantiate(FMG_array[0]);
 
-    //called inside the minigames on startup
+    }
+
+    //called inside the minigame on startup
     public float calcDifficulty()
     {
-        float diff = 1f;
+
+        float difficultyValue = 1f;
 
         if (type == FishType.Shark)
         {
-            diff *= 3;
+            difficultyValue *= 3;
         }
         else if (type == FishType.Boot)
         {
-            diff = -1f;
+            difficultyValue = -1f;
         }
 
-        return diff;
+        return difficultyValue;
     }
 
-  
-    public void updateGameProgress()
+
+    void setupUI()
     {
+        winPositionY = fishWinPosition.rectTransform.localPosition.y;
+        losePositionY = fishLosePosition.rectTransform.localPosition.y;
+        fhPositionY = fishHookParent.rectTransform.localPosition.y;
+        fhPositionX = fishHookParent.rectTransform.localPosition.x;
 
+        originalCutLinePos = cutTheLine.transform.position;
+        originalCutLineScale = cutTheLine.transform.localScale;
+    }
+
+    void calcGameStats()
+    {
+        //rod stats
+        rodPower = baseRodPower + testRodPowerUpgrade;
+        rodControl = baseRodControl + testRodControlUpgrade;
+
+        //fish stats
+        fishSize = testSize;
+        //subtract from current Ypos
+        baseMoveVal = (50 * fishSize) - (10 * rodControl);
+
+        //calculate add/subtract values
+        // - add this on success
+        addProgressVal = baseAddVal + rodPower;
+        // - sub this on failure
+        subProgressVal = baseSubVal + fishSize - rodControl;
     }
 
 
+    //on successful hit
+    public void addProgress()
+    {
+        fhPositionY += addProgressVal;
+        fishHookParent.rectTransform.localPosition = new Vector2(0, fhPositionY);
+        
+    }
+
+    //on unsuccessful hit
+    public void subProgress()
+    {
+        fhPositionY -= subProgressVal;
+        fishHookParent.rectTransform.localPosition = new Vector2(0, fhPositionY);
+    }
+
+   
+    public void baseMovement()
+    {
+        //passive fish movement
+        fhPositionY -= baseMoveVal * Time.deltaTime;
+        fishHookParent.rectTransform.anchoredPosition = new Vector2(0, fhPositionY);
+        //fishHookParent.rectTransform.localPosition = Vector2.Lerp(fishHookParent.rectTransform.localPosition, new Vector2(0, fhPositionY),  2);
+
+        //check win/loss condition
+        if (fishHookParent.rectTransform.anchoredPosition.y > fishWinPosition.rectTransform.anchoredPosition.y)
+        {
+            endCurrentGame(true);
+        }
+
+        if (fishHookParent.rectTransform.anchoredPosition.y < fishWinPosition.rectTransform.anchoredPosition.y)
+        {
+            endCurrentGame(false);
+        }
+    }
+
+    void endCurrentGame(bool win)
+    {
+        if (win)
+        {
+            WorldController.instance.ResolveFishingAttempt(true);
+            
+        }
+        else
+        {
+            Destroy(minigame);
+            //runCutLine();
+        }
+    }
+
+
+    void runCutLine()
+    {
+        cutTheLine.transform.position = Vector3.Lerp(originalCutLinePos, onLossCutLinePos.transform.position, Time.deltaTime);
+        cutTheLine.transform.localScale = Vector3.Lerp(originalCutLineScale, originalCutLineScale * 2, Time.deltaTime);
+        Instantiate(cutTheLine);
+    }
+
+
+
+    //info section
+/*
+    [Header("Info Section")]
+    [SerializeField] public GameObject infoPos;
+    [SerializeField] public InGameInfo_Chunk infoEntry;
+    [SerializeField] bool knownFish;
+    List<InGameInfo_Chunk> fishInfoChunks;
+    Vector2 infoListPosition;
+    int infoListIndex;
     void prepFishInfo()
     {
         infoListPosition = infoPos.transform.position;
@@ -143,6 +271,6 @@ public class Fishing : MonoBehaviour
         //increment list position for next time
         infoListIndex++;
     }
-
+*/
 
 }

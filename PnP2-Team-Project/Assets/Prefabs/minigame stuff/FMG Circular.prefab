@@ -104,7 +104,7 @@ RectTransform:
   m_GameObject: {fileID: 7223349468402916823}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2121458764136119289}
@@ -194,6 +194,5 @@ MonoBehaviour:
   circleFrame: {fileID: 517344970887663149, guid: f4dfb286487e9de4bbbccdf3de7230f2, type: 3}
   hitField: {fileID: 5778717629526623878, guid: 6c4f7b764a3206a44b1c9098d38c86e2, type: 3}
   slider: {fileID: 4255833556374270458, guid: 9632f7005f3db314eafea4c40c8f05a3, type: 3}
-  fishAndHook: {fileID: 0}
-  gameSpeed: 0
-  offsetFromCenterY: 300
+  gameSpeed: 420
+  offsetFromCenterY: 400
