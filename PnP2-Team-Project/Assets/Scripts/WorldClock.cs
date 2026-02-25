@@ -20,7 +20,7 @@ public class WorldClock : MonoBehaviour
         November,
         December
     }
-    double totalGameMinutes;
+    public double totalGameMinutes;
 
     [SerializeField] int startingYear = 2026;
     [SerializeField] Month startingMonth = Month.January;

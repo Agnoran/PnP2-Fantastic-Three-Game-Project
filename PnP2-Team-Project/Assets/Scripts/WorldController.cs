@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UIElements;
 using System.Runtime.InteropServices;
+using UnityEditor.Purchasing;
 
 public enum RodStat
 {
@@ -37,6 +38,10 @@ public class WorldController : MonoBehaviour
     [SerializeField] GameObject menuCatalogue;
     [SerializeField] GameObject menuWinGame;
     [SerializeField] GameObject menuShop;
+
+    [SerializeField] AudioClip[] castingSounds;
+    [SerializeField] AudioClip[] cheeringSounds;
+    [SerializeField] AudioClip[] losingSounds;
 
     [SerializeField] GameObject localShopButton;
     [SerializeField] GameObject globalShopButton;
@@ -195,6 +200,19 @@ public class WorldController : MonoBehaviour
                     {
                         pb.addBait(-1);
                         UpdateBaitDisplay(pb.getCurrBait());
+                        int soundIndex = UnityEngine.Random.Range(0, castingSounds.Length);
+                        if (castingSounds != null && castingSounds.Length > 0)
+                        {
+                            AudioClip clip = castingSounds[soundIndex];
+                            if (clip != null)
+                            {
+                                AudioSource source = player.GetComponentInChildren<AudioSource>();
+                                if (source != null)
+                                {
+                                    source.PlayOneShot(clip);
+                                }
+                            }
+                        }
                         StateStartFishing();
                     }
 
@@ -526,12 +544,39 @@ public class WorldController : MonoBehaviour
         Fishing.instance.destroyGame();
         if (wasCaught)
         {
+            int soundIndex = UnityEngine.Random.Range(0, cheeringSounds.Length);
+            if (cheeringSounds != null && cheeringSounds.Length > 0)
+            {
+                AudioClip clip = cheeringSounds[soundIndex];
+                if (clip != null)
+                {
+                    AudioSource source = player.GetComponentInChildren<AudioSource>();
+                    if (source != null)
+                    {
+                        source.PlayOneShot(clip);
+                    }
+                }
+            }
+
             menuActive = menuFishCaught;
             menuActive.SetActive(true);
             UpdateFishValueTracker();
         }
         else
         {
+            int soundIndex = UnityEngine.Random.Range(0, losingSounds.Length);
+            if (losingSounds != null && losingSounds.Length > 0)
+            {
+                AudioClip clip = losingSounds[soundIndex];
+                if (clip != null)
+                {
+                    AudioSource source = player.GetComponentInChildren<AudioSource>();
+                    if (source != null)
+                    {
+                        source.PlayOneShot(clip);
+                    }
+                }
+            }
             menuActive = menuFishLost;
             menuActive.SetActive(true);
             UpdateFishValueTracker();

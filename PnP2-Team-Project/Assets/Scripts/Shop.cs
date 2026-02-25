@@ -21,26 +21,40 @@ public class Shop : MonoBehaviour
 
     public ShopCategory ShopCategory => shopCategory;
     public ShopItem[] ItemsForSale => itemsForSale;
+    bool subscribedToClock = false;
 
     void Awake()
     {
         InitializeStockFromTemplates();
         nextRestockMinute = GetNowMinutes() + restockEveryMinutes;
     }
+    void Start()
+    {
+        TrySubscribeToClock();
+    }
 
+    void TrySubscribeToClock()
+    {
+        if (subscribedToClock)
+            return;
+
+        if (WorldClock.instance == null)
+            return;
+
+        WorldClock.instance.OnMinuteChanged += HandleMinuteChanged;
+        subscribedToClock = true;
+    }
     void OnEnable()
     {
-        if (WorldClock.instance != null)
-        {
-            WorldClock.instance.OnMinuteChanged += HandleMinuteChanged;
-        }
+        TrySubscribeToClock();
     }
 
     void OnDisable()
     {
-        if (WorldClock.instance != null)
+        if (subscribedToClock && WorldClock.instance != null)
         {
             WorldClock.instance.OnMinuteChanged -= HandleMinuteChanged;
+            subscribedToClock = false;
         }
     }
 
