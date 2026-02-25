@@ -3,6 +3,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UIElements;
 using System.Runtime.InteropServices;
+using UnityEditor.Purchasing;
+using System.Collections.Generic;
+using System.Collections;
 
 public enum RodStat
 {
@@ -23,6 +26,11 @@ public class WorldController : MonoBehaviour
 {
     public static WorldController instance;
     [SerializeField] GameObject menuActive;
+
+    [SerializeField] GameObject menuStart;
+    [SerializeField] GameObject menuTutorialOne;
+    [SerializeField] GameObject menuTutorialTwo;
+
     [SerializeField] GameObject prevMenuActive;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuFishing;
@@ -33,6 +41,10 @@ public class WorldController : MonoBehaviour
     [SerializeField] GameObject menuWinGame;
     [SerializeField] GameObject menuShop;
 
+    [SerializeField] AudioClip[] castingSounds;
+    [SerializeField] AudioClip[] cheeringSounds;
+    [SerializeField] AudioClip[] losingSounds;
+
     [SerializeField] GameObject localShopButton;
     [SerializeField] GameObject globalShopButton;
     [SerializeField] Shop globalShop;
@@ -42,13 +54,15 @@ public class WorldController : MonoBehaviour
     Shop activeLocalShop;
     public Shop ActiveLocalShop => activeLocalShop;
 
-    [SerializeField] int fishValueToWinGame;
+    int fishValueToWinGame;
 
     [SerializeField] boatCamera cameraScript;
 
     Fishing game;
 
-    [SerializeField] TMP_Text fishValueTracker;
+    [SerializeField] TMP_Text playerMoneyTracker;
+
+    [SerializeField] TMP_Text baitDisplay;
 
     public bool isPaused;
     public bool isFishing;
@@ -62,10 +76,37 @@ public class WorldController : MonoBehaviour
 
     float timeScaleOrig;
     private bool gameWon;
+    public bool GameWon => gameWon;
 
     private bool startOfGame = false;
 
     [SerializeField] GameObject player;
+
+    [SerializeField] int playerMoney = 0;
+    public int PlayerMoney => playerMoney;
+
+    playerBoat playerScript;
+
+    public bool CanAfford(int cost)
+    {
+        return playerMoney >= cost;
+    }
+
+    public bool TrySpendMoney(int cost)
+    {
+        if (cost < 0) return false;
+        if (playerMoney < cost) return false;
+        playerMoney -= cost;
+        UpdateFishValueTracker();
+        return true;
+    }
+
+    public void AddMoney(int amount)
+    {
+        if (amount <= 0) return;
+        playerMoney += amount;
+        UpdateFishValueTracker();
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -74,17 +115,17 @@ public class WorldController : MonoBehaviour
         instance = this;
         timeScaleOrig = Time.timeScale;
         startOfGame = true;
+        StateBeginGame();
         isPaused = false;
         isFishing = false;
         invOpen = false;
         catalogueOpen = false;
-        menuActive = null;
 
         canFish = false;
         fishToAttempt = null;
         currentPool = null;
         gameWon = false;
-        UpdateFishValueTracker();
+
 
         if (cameraScript == null)
             cameraScript = FindAnyObjectByType<boatCamera>();
@@ -92,6 +133,8 @@ public class WorldController : MonoBehaviour
 
         ShowGlobalShopButton();
         startOfGame = false;
+        
+        
     }
 
     // Update is called once per frame
@@ -154,7 +197,29 @@ public class WorldController : MonoBehaviour
                     //    player.addBait(-1);
                     //    StateStartFishing();
                     //}
-;                   StateStartFishing();
+                    playerBoat pb = (player != null) ? player.GetComponentInChildren<playerBoat>() : null;
+                    if (pb != null && pb.getCurrBait() > 0)
+                    {
+                        pb.addBait(-1);
+                        UpdateBaitDisplay(pb.getCurrBait());
+                        int soundIndex = UnityEngine.Random.Range(0, castingSounds.Length);
+                        if (castingSounds != null && castingSounds.Length > 0)
+                        {
+                            AudioClip clip = castingSounds[soundIndex];
+                            if (clip != null)
+                            {
+                                AudioSource source = player.GetComponentInChildren<AudioSource>();
+                                if (source != null)
+                                {
+                                    source.PlayOneShot(clip);
+                                }
+                            }
+                        }
+                        StateStartFishing();
+                    }
+
+
+;                   
                     
                 }
             }
@@ -179,6 +244,63 @@ public class WorldController : MonoBehaviour
         }
     }
 
+    private void UpdateBaitDisplay(int currBait)
+    {
+        if (baitDisplay == null) return;
+        baitDisplay.text = currBait.ToString();
+    }
+
+    private void UpdateFishValueTracker()
+    {
+        if (playerMoneyTracker == null) return;
+        playerMoneyTracker.text = playerMoney.ToString();
+    }
+
+    public void StateBeginGame()
+    {
+        isPaused = true;
+        // pauses Time
+        Time.timeScale = 0;
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+        // activates the pause menu
+        menuActive = menuStart;
+        menuActive.SetActive(true);
+        menuActive.transform.SetAsLastSibling(); // bring to front
+    }
+    public void StateTutorialOne()
+    {
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+        menuActive = menuTutorialOne;
+        menuActive.SetActive(true);
+        menuActive.transform.SetAsLastSibling();
+    }
+    public void StateTutorialTwo()
+    {
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+        menuActive = menuTutorialTwo;
+        menuActive.SetActive(true);
+        menuActive.transform.SetAsLastSibling();
+    }
+    public void StateStartGame()
+    {
+        StateUnpaused();
+        playerBoat pb = (player != null) ? player.GetComponentInChildren<playerBoat>() : null;
+        if (pb != null)
+        {
+            UpdateBaitDisplay(pb.getCurrBait());
+        }
+        UpdateFishValueTracker();
+    }
+
     /// <summary>
     /// Optional Method to manually set the canFish
     /// </summary>
@@ -191,7 +313,7 @@ public class WorldController : MonoBehaviour
     /// <summary>
     /// Sets the active menu to the catalogue and activates it
     /// </summary>
-    private void StateOpenCatalogue()
+    public void StateOpenCatalogue()
     {
         catalogueOpen = true;
         menuActive = menuCatalogue;
@@ -285,8 +407,19 @@ public class WorldController : MonoBehaviour
             return;
         }
 
-        fishToAttempt = pool.GenerateFishToAttempt();
-        
+        float rodLuck = 0f;
+
+        if (player != null)
+        {
+            playerBoat pb = player.GetComponentInChildren<playerBoat>();
+            if (pb != null && pb.getCurrRod() != null)
+            {
+                rodLuck = pb.getCurrRod().RodLuck;
+            }
+        }
+
+        fishToAttempt = pool.GenerateFishToAttempt(rodLuck);
+
 
         if (fishToAttempt != null)
         {
@@ -362,22 +495,60 @@ public class WorldController : MonoBehaviour
 
     private void checkForWinGame()
     {
-        if (InventorySystem.instance.GetTotalFishValue() >= fishValueToWinGame)
-        {
-            StateWinGame();
-        }
+        return;
+
+        // we are now winning the game by an item now
+
+        //if (InventorySystem.instance.GetTotalFishValue() >= fishValueToWinGame)
+        //{
+        //    StateWinGame();
+        //}
     }
 
-    private void StateWinGame()
+    public void StateWinGame()
     {
-        if(menuActive != null)
+        if (gameWon) return;
+
+        AudioClip clip = null;
+
+        if (cheeringSounds != null && cheeringSounds.Length > 0)
+        {
+            int soundIndex = UnityEngine.Random.Range(0, cheeringSounds.Length);
+            clip = cheeringSounds[soundIndex];
+        }
+
+        if (menuActive != null)
         {
             menuActive.SetActive(false);
         }
+
         menuActive = menuWinGame;
-        menuActive.SetActive(true);
+        if (menuActive != null)
+        {
+            menuActive.SetActive(true);
+            menuActive.transform.SetAsLastSibling();
+        }
+
         gameWon = true;
 
+        if (clip != null)
+        {
+            AudioSource source = (player != null) ? player.GetComponentInChildren<AudioSource>() : null;
+            if (source != null)
+            {
+                source.PlayOneShot(clip);
+                StartCoroutine(PauseAfterRealtime(clip.length * 0.9f));
+                return;
+            }
+        }
+
+        Time.timeScale = 0f;
+    }
+
+    IEnumerator PauseAfterRealtime(float seconds)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        Time.timeScale = 0f;
     }
 
     /// <summary>
@@ -408,32 +579,43 @@ public class WorldController : MonoBehaviour
         Fishing.instance.destroyGame();
         if (wasCaught)
         {
+            int soundIndex = UnityEngine.Random.Range(0, cheeringSounds.Length);
+            if (cheeringSounds != null && cheeringSounds.Length > 0)
+            {
+                AudioClip clip = cheeringSounds[soundIndex];
+                if (clip != null)
+                {
+                    AudioSource source = player.GetComponentInChildren<AudioSource>();
+                    if (source != null)
+                    {
+                        source.PlayOneShot(clip);
+                    }
+                }
+            }
+
             menuActive = menuFishCaught;
             menuActive.SetActive(true);
             UpdateFishValueTracker();
         }
         else
         {
+            int soundIndex = UnityEngine.Random.Range(0, losingSounds.Length);
+            if (losingSounds != null && losingSounds.Length > 0)
+            {
+                AudioClip clip = losingSounds[soundIndex];
+                if (clip != null)
+                {
+                    AudioSource source = player.GetComponentInChildren<AudioSource>();
+                    if (source != null)
+                    {
+                        source.PlayOneShot(clip);
+                    }
+                }
+            }
             menuActive = menuFishLost;
             menuActive.SetActive(true);
             UpdateFishValueTracker();
         }
-    }
-
-    private void UpdateFishValueTracker()
-    {
-        int value = InventorySystem.instance.GetTotalFishValue();
-        
-        if (startOfGame)
-        {
-            fishValueTracker.text = "- " + (fishValueToWinGame);
-        }
-        else
-        {
-            fishValueTracker.text = "- " + (fishValueToWinGame - value).ToString();
-            checkForWinGame();
-        }
-        
     }
 
     public void FinishFishingResult()
@@ -528,7 +710,21 @@ public class WorldController : MonoBehaviour
 
         menuActive = null;
     }
+    public void TriggerWinFromShop()
+    {
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+        }
+        menuActive = menuWinGame;
+        menuActive.SetActive(true);
+        gameWon = true;
+    }
+    public void RefreshBaitDisplay()
+    {
+        playerBoat pb = (player != null) ? player.GetComponentInChildren<playerBoat>() : null;
+        if (pb == null) return;
+
+        UpdateBaitDisplay(pb.getCurrBait());
+    }
 }
-
-
-

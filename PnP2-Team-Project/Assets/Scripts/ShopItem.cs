@@ -9,7 +9,8 @@ public enum ShopItemType
 {
     Consumable,
     Gear,
-    Upgrade
+    Upgrade,
+    Win
 }
 [CreateAssetMenu(menuName = "Scriptable Objects/Shop Item", fileName = "NewShopItem")]
 

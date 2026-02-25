@@ -5,19 +5,15 @@ public class ShopUI : MonoBehaviour
 {
     public static ShopUI instance;
 
-    [Header("Menu Root")]
     [SerializeField] GameObject shopMenuRoot;
-
-    [Header("Grid Slots (fixed buttons)")]
     [SerializeField] SetShopButton[] itemButtonSlots;
 
-    [Header("Optional UI")]
     [SerializeField] TMP_Text moneyText;
     [SerializeField] TMP_Text shopTitleText;
 
-    [Header("Temporary Money")]
-    // later we'll make player Money equal the money on the Player
-    [SerializeField] int playerMoney = 250;
+    [Header("Sell Fish")]
+    [SerializeField] GameObject sellFishButtonRoot;
+    [SerializeField] TMP_Text sellFishButtonText;
 
     Shop currentShop;
 
@@ -32,9 +28,25 @@ public class ShopUI : MonoBehaviour
         instance = this;
     }
 
-    public bool CanAfford(int cost)
+    void OnEnable()
     {
-        return playerMoney >= cost;
+        if (InventorySystem.instance != null)
+        {
+            InventorySystem.instance.OnInventoryChanged += HandleInventoryChanged;
+        }
+    }
+
+    void OnDisable()
+    {
+        if (InventorySystem.instance != null)
+        {
+            InventorySystem.instance.OnInventoryChanged -= HandleInventoryChanged;
+        }
+    }
+
+    void HandleInventoryChanged()
+    {
+        RefreshSellFishButton();
     }
 
     public void Open(Shop shop)
@@ -56,7 +68,7 @@ public class ShopUI : MonoBehaviour
         }
 
         PopulateFromShop(shop);
-        RefreshMoneyUI();
+        RefreshShop();
 
         WorldController.instance.StateOpenShop();
     }
@@ -73,7 +85,24 @@ public class ShopUI : MonoBehaviour
         }
 
         ClearAllSlots();
+        RefreshSellFishButton();
+
         WorldController.instance.StateCloseShop();
+    }
+
+    public void RefreshShopIfShowing(Shop shop)
+    {
+        if (shop == null) return;
+        if (currentShop != shop) return;
+
+        RefreshShop();
+    }
+
+    public void RefreshShop()
+    {
+        RefreshMoneyUI();
+        RefreshAllSlots();
+        RefreshSellFishButton();
     }
 
     void PopulateFromShop(Shop shop)
@@ -117,14 +146,13 @@ public class ShopUI : MonoBehaviour
 
     void RefreshMoneyUI()
     {
-        // we'll add a playerMoney = player.GetMoney() or soemthing like that
-        if (moneyText != null)
-        {
-            moneyText.text = playerMoney.ToString();
-        }
+        if (moneyText == null) return;
+        if (WorldController.instance == null) return;
+
+        moneyText.text = WorldController.instance.PlayerMoney.ToString();
     }
 
-    public void RefreshAllSlots()
+    void RefreshAllSlots()
     {
         if (itemButtonSlots == null)
             return;
@@ -138,60 +166,104 @@ public class ShopUI : MonoBehaviour
         }
     }
 
-    // Purchase by index instead of the scriptable objects, just in case 2 shops are given the same item, we want stock to be per shop
-    public void TryPurchase(Shop targetShop, int itemIndex)
+    void RefreshSellFishButton()
     {
-        if (targetShop == null)
+        if (sellFishButtonRoot == null || sellFishButtonText == null)
             return;
 
-        if (WorldController.instance == null || !WorldController.instance.IsMenuOpen())
+        bool atFishStore = (currentShop != null && currentShop.ShopCategory == ShopCategory.FishAndTackle);
+
+        sellFishButtonRoot.SetActive(atFishStore);
+
+        if (!atFishStore)
             return;
 
-        ShopItem[] items = targetShop.ItemsForSale;
-        if (items == null)
-            return;
+        int totalValue = 0;
 
-        if (itemIndex < 0 || itemIndex >= items.Length)
-            return;
-
-        ShopItem targetItem = items[itemIndex];
-        if (targetItem == null)
-            return;
-
-        // Stock check
-        int stock = targetShop.GetStockAtIndex(itemIndex);
-        if (stock <= 0)
-            return;
-
-        // Money check
-        if (!CanAfford(targetItem.Price))
-            return;
-
-        // Spend money
-        playerMoney -= targetItem.Price;
-        RefreshMoneyUI();
-
-        // Consume 1 stock
-        bool consumed = targetShop.TryConsumeStockAtIndex(itemIndex, 1);
-        if (!consumed)
+        if (InventorySystem.instance != null)
         {
-            playerMoney += targetItem.Price;
-            RefreshMoneyUI();
-            RefreshAllSlots();
-            return;
+            totalValue = InventorySystem.instance.GetTotalFishValue();
         }
 
-        // Apply purchase effects
+        sellFishButtonText.text = $"Sell All (${totalValue})";
 
-        // right now the boat does not have IUpgrade on it, so it's not going to do anything
-        // this will change once Jose finishes Boat/player stat logic and includes the interface functions
-        if (targetItem.ItemType == ShopItemType.Upgrade)
+        UnityEngine.UI.Button button = sellFishButtonRoot.GetComponent<UnityEngine.UI.Button>();
+        if (button != null)
         {
+            button.interactable = totalValue > 0;
+        }
+    }
+
+    public void SellAllFish()
+    {
+        if (currentShop == null)
+            return;
+
+        if (currentShop.ShopCategory != ShopCategory.FishAndTackle)
+            return;
+
+        if (InventorySystem.instance == null)
+            return;
+
+        if (WorldController.instance == null)
+            return;
+
+        int totalValue = InventorySystem.instance.GetTotalFishValue();
+        if (totalValue <= 0)
+            return;
+
+        var fishList = InventorySystem.instance.GetAllFish();
+        for (int i = fishList.Count - 1; i >= 0; i--)
+        {
+            InventorySystem.instance.RemoveFish(fishList[i]);
+        }
+
+        WorldController.instance.AddMoney(totalValue);
+        RefreshShop();
+    }
+
+    public void TryPurchase(Shop targetShop, int itemIndex)
+    {
+        if (targetShop == null) return;
+        if (WorldController.instance == null) return;
+        if (!WorldController.instance.shopOpen) return;
+
+        ShopItem[] items = targetShop.ItemsForSale;
+        if (items == null) return;
+
+        if (itemIndex < 0 || itemIndex >= items.Length) return;
+
+        ShopItem targetItem = items[itemIndex];
+        if (targetItem == null) return;
+
+        int stock = targetShop.GetStockAtIndex(itemIndex);
+        if (stock <= 0) return;
+
+        if (!WorldController.instance.TrySpendMoney(targetItem.Price))
+            return;
+
+        if (!targetShop.TryConsumeStockAtIndex(itemIndex, 1))
+        {
+            WorldController.instance.AddMoney(targetItem.Price);
+            RefreshShop();
+            return;
+        }
+        if (targetItem.ItemType == ShopItemType.Win)
+        {
+            if (WorldController.instance != null)
+            {
+                WorldController.instance.TriggerWinFromShop();
+                return;
+            }
+        }
+        if (targetItem.UpgradeDefinition != null)
+        {
+            
             GameObject playerObject = targetShop.GetPlayer();
             if (playerObject != null)
             {
                 IUpgrade upgradeTarget = playerObject.GetComponent<IUpgrade>();
-                if (upgradeTarget != null && targetItem.UpgradeDefinition != null)
+                if (upgradeTarget != null)
                 {
                     targetItem.UpgradeDefinition.Apply(upgradeTarget);
                 }
@@ -199,11 +271,25 @@ public class ShopUI : MonoBehaviour
         }
         else
         {
-            // Consumable/Gear placeholder:
-            // this else will expand to handle other effects
-            // as long as Consumables and gear are scriptable objects with a "public override void Apply(IUpgrade upgradeTarget)" function, they will work
+            if (targetItem.ItemPrefab != null)
+            {
+                Instantiate(targetItem.ItemPrefab);
+            }
         }
 
-        RefreshAllSlots();
+        RefreshShop();
+        if (WorldController.instance != null)
+        {
+            WorldController.instance.RefreshBaitDisplay();
+        }
+
+        if (WorldController.instance.GameWon)
+        {
+            Close();
+        }
+    }
+    public bool CanAfford(int cost)
+    {
+        return WorldController.instance != null && WorldController.instance.CanAfford(cost);
     }
 }

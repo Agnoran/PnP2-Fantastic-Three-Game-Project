@@ -1,3 +1,4 @@
+using System;
 using Unity.Burst;
 using UnityEngine;
 
@@ -19,7 +20,8 @@ public class WorldClock : MonoBehaviour
         November,
         December
     }
-    
+    public double totalGameMinutes;
+
     [SerializeField] int startingYear = 2026;
     [SerializeField] Month startingMonth = Month.January;
     [SerializeField] int startingDay = 1;
@@ -43,10 +45,12 @@ public class WorldClock : MonoBehaviour
     float second;
 
 
-[SerializeField] int minuteSpeed;
+    [SerializeField] int minuteSpeed;
+    public event System.Action OnMinuteChanged;
+    public double TotalMinutes => totalGameMinutes;
 
 
-    
+
 
     void Awake()
     {
@@ -54,26 +58,102 @@ public class WorldClock : MonoBehaviour
 
         year = startingYear;
         month = startingMonth;
+
         SetMaxDay();
-        day = Mathf.Clamp(startingDay, 1, maxDay);
-        hour = Mathf.Clamp(startingHour, 0, 23);
-        minute = Mathf.Clamp(startingMinute, 0, 59);
-        second = Mathf.Clamp(startingSecond, 0f, 59.99f);
+
+        day = startingDay;
+        hour = startingHour;
+        minute = 0;
+        second = 0f;
+
+        totalGameMinutes = ConvertDateToTotalMinutes();
     }
     void Update()
     {
         float dt = Time.deltaTime;
-        // pause clock when game is paused
         if (dt <= 0f)
-        {
             return;
-        }
 
         second += dt * secondsPerRealSecond;
 
-        TimeChange();
+        while (second >= 60f)
+        {
+            second -= 60f;
+            AddGameMinutes(1);
+        }
 
         UpdateClockHands();
+    }
+    double ConvertDateToTotalMinutes()
+    {
+        int totalDays = (startingDay - 1);
+
+        for (int i = 0; i < (int)startingMonth; i++)
+        {
+            totalDays += GetDaysInMonth((Month)i);
+        }
+
+        double minutes =
+            (totalDays * 1440.0) +
+            (startingHour * 60.0) +
+            minute;
+
+        return minutes;
+    }
+    public void AddGameMinutes(double minutesToAdd)
+    {
+        if (minutesToAdd <= 0)
+            return;
+
+        int oldWholeMinute = (int)System.Math.Floor(totalGameMinutes);
+
+        totalGameMinutes += minutesToAdd;
+
+        int newWholeMinute = (int)System.Math.Floor(totalGameMinutes);
+
+        for (int m = oldWholeMinute + 1; m <= newWholeMinute; m++)
+        {
+            OnMinuteChanged?.Invoke();
+        }
+
+        RecalculateDateTimeFromTotal();
+    }
+    void RecalculateDateTimeFromTotal()
+    {
+        double remainingMinutes = totalGameMinutes;
+
+        int totalDays = (int)(remainingMinutes / 1440.0);
+        remainingMinutes %= 1440.0;
+
+        hour = (int)(remainingMinutes / 60.0);
+        minute = (int)(remainingMinutes % 60.0);
+
+        int workingDayCount = totalDays;
+
+        month = Month.January;
+
+        while (true)
+        {
+            int daysInMonth = GetDaysInMonth(month);
+
+            if (workingDayCount < daysInMonth)
+            {
+                day = workingDayCount + 1;
+                break;
+            }
+
+            workingDayCount -= daysInMonth;
+
+            if (month == Month.December)
+            {
+                month = Month.January;
+                year++;
+            }
+            else
+            {
+                month++;
+            }
+        }
     }
     void UpdateClockHands()
     {
@@ -137,28 +217,64 @@ public class WorldClock : MonoBehaviour
                 break;
         }
     }
+    int GetDaysInMonth(Month m)
+    {
+        switch (m)
+        {
+            case Month.January:
+                return 31;
+            case Month.Febuary:
+                return 28;
+            case Month.March:
+                return 31;
+            case Month.April:
+                return 30;
+            case Month.May:
+                return 31;
+            case Month.June:
+                return 30;
+            case Month.July:
+                return 31;
+            case Month.August:
+                return 31;
+            case Month.September:
+                return 30;
+            case Month.October:
+                return 31;
+            case Month.November:
+                return 30;
+            case Month.December:
+                return 31;
+            default:
+                return 31;
+        }
+    }
+    /// <summary>
+    /// since I changed to a running minute count and then converting
+    /// that into the different date info, this method is no longer used
+    /// </summary>
     void TimeChange()
     {
-        if (second >= 60)
+        if (second >= 60f)
         {
-            second = 0;
+            second -= 60f;
             minute++;
         }
         if (minute >= 60)
         {
-            minute = 0;
+            minute -= 60;
             hour++;
         }
-        if (hour > 24)
+        if (hour >= 24)
         {
-            hour = 0;
+            hour -=24;
             day++;
         }
         if (countMonths)
         {
             if (day > maxDay)
             {
-                day = 0;
+                day = 1;
                 month++;
                 SetMaxDay();
             }
@@ -171,4 +287,9 @@ public class WorldClock : MonoBehaviour
         }
 
     }
+    public double GetTotalMinutes()
+    {
+        return totalGameMinutes;
+    }
+
 }

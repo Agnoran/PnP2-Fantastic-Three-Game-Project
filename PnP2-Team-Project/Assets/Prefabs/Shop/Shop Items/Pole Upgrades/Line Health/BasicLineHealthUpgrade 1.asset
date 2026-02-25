@@ -15,8 +15,8 @@ MonoBehaviour:
   displayName: Pole Line Health +50
   description: Increase your rod's Line Durability by 50
   icon: {fileID: 0}
-  price: 500
-  quantity: 1
+  price: 350
+  quantity: 3
   allowedCategories: 00000000
   itemType: 2
   itemPrefab: {fileID: 0}

@@ -4,20 +4,58 @@ public class Shop : MonoBehaviour
 {
     [SerializeField] ShopCategory shopCategory;
     [SerializeField] ShopItem[] itemsForSale;
-
     [SerializeField] bool requirePlayerNearby = true;
 
-    bool playerNearby = false;
+    [Header("Restock")]
+    [SerializeField] bool useRestock = true;
+    [SerializeField] int restockEveryMinutes = 30;
+    [SerializeField] int restockAmountPerInterval = 1;
+
+    bool playerNearby;
     GameObject player;
 
     int[] stockRemaining;
+    int[] stockMax;
+
+    double nextRestockMinute;
 
     public ShopCategory ShopCategory => shopCategory;
     public ShopItem[] ItemsForSale => itemsForSale;
+    bool subscribedToClock = false;
 
     void Awake()
     {
         InitializeStockFromTemplates();
+        nextRestockMinute = GetNowMinutes() + restockEveryMinutes;
+    }
+    void Start()
+    {
+        TrySubscribeToClock();
+    }
+
+    void TrySubscribeToClock()
+    {
+        if (subscribedToClock)
+            return;
+
+        if (WorldClock.instance == null)
+            return;
+
+        WorldClock.instance.OnMinuteChanged += HandleMinuteChanged;
+        subscribedToClock = true;
+    }
+    void OnEnable()
+    {
+        TrySubscribeToClock();
+    }
+
+    void OnDisable()
+    {
+        if (subscribedToClock && WorldClock.instance != null)
+        {
+            WorldClock.instance.OnMinuteChanged -= HandleMinuteChanged;
+            subscribedToClock = false;
+        }
     }
 
     void InitializeStockFromTemplates()
@@ -25,22 +63,66 @@ public class Shop : MonoBehaviour
         if (itemsForSale == null)
         {
             stockRemaining = new int[0];
+            stockMax = new int[0];
             return;
         }
 
         stockRemaining = new int[itemsForSale.Length];
+        stockMax = new int[itemsForSale.Length];
 
         for (int i = 0; i < itemsForSale.Length; i++)
         {
             ShopItem item = itemsForSale[i];
+            int templateQty = (item != null) ? Mathf.Max(0, item.Quantity) : 0;
 
-            if (item == null)
-            {
-                stockRemaining[i] = 0;
+            stockRemaining[i] = templateQty;
+            stockMax[i] = templateQty;
+        }
+    }
+
+    double GetNowMinutes()
+    {
+        if (WorldClock.instance != null)
+        {
+            return WorldClock.instance.TotalMinutes;
+        }
+
+        return Time.timeAsDouble / 60.0;
+    }
+
+    void HandleMinuteChanged()
+    {
+        if (!useRestock)
+            return;
+
+        double now = GetNowMinutes();
+
+        if (now < nextRestockMinute)
+            return;
+
+        while (now >= nextRestockMinute)
+        {
+            RestockOnce();
+            nextRestockMinute += restockEveryMinutes;
+        }
+
+        if (ShopUI.instance != null)
+        {
+            ShopUI.instance.RefreshShopIfShowing(this);
+        }
+    }
+
+    void RestockOnce()
+    {
+        if (stockRemaining == null || stockMax == null)
+            return;
+
+        for (int i = 0; i < stockRemaining.Length; i++)
+        {
+            if (stockMax[i] <= 0)
                 continue;
-            }
 
-            stockRemaining[i] = Mathf.Max(0, item.Quantity);
+            stockRemaining[i] = Mathf.Min(stockMax[i], stockRemaining[i] + restockAmountPerInterval);
         }
     }
 
@@ -75,21 +157,30 @@ public class Shop : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (requirePlayerNearby && !other.CompareTag("Player")) { return; }
+        if (requirePlayerNearby && !other.CompareTag("Player"))
+            return;
 
         playerNearby = true;
         player = other.gameObject;
-        WorldController.instance.showShopButton(true, this);
+
+        if (WorldController.instance != null)
+        {
+            WorldController.instance.showShopButton(true, this);
+        }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (requirePlayerNearby && !other.CompareTag("Player")) { return; }
+        if (requirePlayerNearby && !other.CompareTag("Player"))
+            return;
 
         player = null;
         playerNearby = false;
 
-        WorldController.instance.showShopButton(false, this);
+        if (WorldController.instance != null)
+        {
+            WorldController.instance.showShopButton(false, this);
+        }
     }
 
     public bool CanOpenShop()

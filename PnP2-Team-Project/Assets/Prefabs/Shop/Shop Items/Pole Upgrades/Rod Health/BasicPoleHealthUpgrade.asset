@@ -15,8 +15,8 @@ MonoBehaviour:
   displayName: Pole Durability +100
   description: Increase your rod's Durability by 100
   icon: {fileID: 0}
-  price: 100
-  quantity: 1
+  price: 450
+  quantity: 3
   allowedCategories: 00000000
   itemType: 2
   itemPrefab: {fileID: 0}

@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Pole Luck +1
   description: Increase your rod's Luck by 1
   icon: {fileID: 0}
-  price: 500
+  price: 700
   quantity: 1
   allowedCategories: 00000000
   itemType: 2
