@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine.UIElements;
 using System.Runtime.InteropServices;
 using UnityEditor.Purchasing;
+using System.Collections.Generic;
+using System.Collections;
 
 public enum RodStat
 {
@@ -505,15 +507,48 @@ public class WorldController : MonoBehaviour
 
     public void StateWinGame()
     {
-        if(menuActive != null)
+        if (gameWon) return;
+
+        AudioClip clip = null;
+
+        if (cheeringSounds != null && cheeringSounds.Length > 0)
+        {
+            int soundIndex = UnityEngine.Random.Range(0, cheeringSounds.Length);
+            clip = cheeringSounds[soundIndex];
+        }
+
+        if (menuActive != null)
         {
             menuActive.SetActive(false);
         }
-        menuActive = menuWinGame;
-        menuActive.SetActive(true);
-        gameWon = true;
-        Time.timeScale = 0;
 
+        menuActive = menuWinGame;
+        if (menuActive != null)
+        {
+            menuActive.SetActive(true);
+            menuActive.transform.SetAsLastSibling();
+        }
+
+        gameWon = true;
+
+        if (clip != null)
+        {
+            AudioSource source = (player != null) ? player.GetComponentInChildren<AudioSource>() : null;
+            if (source != null)
+            {
+                source.PlayOneShot(clip);
+                StartCoroutine(PauseAfterRealtime(clip.length * 0.9f));
+                return;
+            }
+        }
+
+        Time.timeScale = 0f;
+    }
+
+    IEnumerator PauseAfterRealtime(float seconds)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        Time.timeScale = 0f;
     }
 
     /// <summary>

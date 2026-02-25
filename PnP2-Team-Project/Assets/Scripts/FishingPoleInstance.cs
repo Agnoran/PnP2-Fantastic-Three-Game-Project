@@ -5,14 +5,14 @@ public class FishingPoleInstance : MonoBehaviour
     [Header("Base Definition")]
     [SerializeField] FishingPoleStats baseStats;
 
-    float lineHealthMax;
-    float rodHealthMax;
-    float rodDamagePower;
-    float rodLuck;
-    float rodControl;
+    [SerializeField] float lineHealthMax;
+    [SerializeField] float rodHealthMax;
+    [SerializeField] float rodDamagePower;
+    [SerializeField] float rodLuck;
+    [SerializeField] float rodControl;
 
-    float lineHealthCurrent;
-    float rodHealthCurrent;
+    [SerializeField] float lineHealthCurrent;
+    [SerializeField] float rodHealthCurrent;
 
     public FishingPoleStats BaseStats => baseStats;
 
