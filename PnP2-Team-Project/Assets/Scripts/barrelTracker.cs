@@ -9,4 +9,8 @@ public class barrelTracker : MonoBehaviour
         if (spawner != null)
             spawner.BarrelDied();
     }
+
+
+
+
 }

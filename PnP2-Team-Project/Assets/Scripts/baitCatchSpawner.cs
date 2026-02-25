@@ -2,73 +2,60 @@ using UnityEngine;
 
 public class baitCatchSpawner : MonoBehaviour
 {
-    [Header("Prefab")]
-    [SerializeField] GameObject barrelPre;
-
-    [Header("Spawn Timing")]
-    [SerializeField] float spawnInterval = 15f;
-    [SerializeField] float spawnVariance = 5f;
-
-    [Header("Spawn Area")]
-    [SerializeField] float spawnRangeX = 50f;
-    [SerializeField] float spawnRangeZ = 50f;
+    [SerializeField] GameObject barrelToSpawn;
+    [SerializeField] int spawnAmount = 5;
+    [SerializeField] float spawnRate = 3f;
+    [SerializeField] float spawnDist = 20f;
     [SerializeField] float spawnY = 0.5f;
 
-    [Header("Limits")]
-    [SerializeField] int maxBarrels = 3;
-
-    float timer;
-    float nextSpawnTime;
-    int currentBarrels = 0;
+    int spawnCount;
+    float spawnTimer;
+    bool startSpawning;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        SetNextSpawnTime();
+      startSpawning = true;
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-
-        if (timer >= nextSpawnTime && currentBarrels < maxBarrels)
+       if (startSpawning)
         {
-            SpawnBarrel();
-            timer = 0f;
-            SetNextSpawnTime();
+            spawnTimer += Time.deltaTime;
+
+            if (spawnCount < spawnAmount && spawnTimer >= spawnRate)
+            {
+                Spawn();
+            }
         }
 
     }
 
-    void SetNextSpawnTime()
+    void Spawn()
     {
-        nextSpawnTime = spawnInterval + Random.Range(-spawnVariance, spawnVariance);
-        nextSpawnTime = Mathf.Max(nextSpawnTime, 3f);
+
+        spawnTimer = 0;
+        spawnCount++;
+
+        Vector3 ranPos = Random.insideUnitSphere * spawnDist;
+        ranPos.y = 0;
+        ranPos += transform.position;
+        ranPos.y = spawnY;
+
+        Instantiate(barrelToSpawn, ranPos, Quaternion.Euler(0, Random.Range(0f, 360f), 0f));
     }
 
-    void SpawnBarrel()
-    {
-        if (barrelPre == null) return;
-
-        float x = transform.position.x + Random.Range(-spawnRangeX, spawnRangeX);
-        float z = transform.position.z + Random.Range(-spawnRangeZ, spawnRangeZ);
-        Vector3 spawnPos = new Vector3(x, spawnY, z);
-
-        float randomAngle = Random.Range(0f, 360f);
-        Quaternion rotation = Quaternion.Euler(0f, randomAngle, 0f);
-
-        GameObject barrel = Instantiate(barrelPre, spawnPos, rotation);
-
-        currentBarrels++;
-        barrel.AddComponent<barrelTracker>().spawner = this;
-    }
     public void BarrelDied()
     {
-        currentBarrels--;
-        if (currentBarrels < 0) currentBarrels = 0;
+        spawnCount--;
+        if (spawnCount < 0) spawnCount = 0;
+
+
     }
+
 }
 
 

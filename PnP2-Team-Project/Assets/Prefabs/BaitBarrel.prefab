@@ -496,7 +496,7 @@ Transform:
   m_GameObject: {fileID: 6938180960262996342}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.98, y: 1.5, z: -33.12}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5341717, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -582,7 +582,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2.5
+  m_Height: 6
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &8459088979051999757
@@ -726,7 +726,7 @@ Transform:
   m_GameObject: {fileID: 9219302671679393944}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: -4.45, y: 0.473, z: -1.05}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -749,15 +749,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::baitCatch
   type: 1
   amount: 5
-  flySpeed: 8
-  bobHeight: 0.7
-  bobSpeed: 3
-  spinSpeed: 180
-  lifeTime: 100
   floatingText: {fileID: 3281535232588644143}
   promptMessage: BAIT!
-  textBobSpeed: 1
-  textBobHeight: 1
 --- !u!54 &8424153021670647034
 Rigidbody:
   m_ObjectHideFlags: 0

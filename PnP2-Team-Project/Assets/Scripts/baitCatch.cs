@@ -8,45 +8,21 @@ public class baitCatch : MonoBehaviour
     [SerializeField] BaitType type = BaitType.Worm;
     [SerializeField] int amount = 1;
 
-    [Header("Movement")]
-    [SerializeField] float flySpeed = 3f;
-    [SerializeField] float bobHeight = 0.2f;
-    [SerializeField] float bobSpeed = 2f;
-    [SerializeField] float spinSpeed = 90f;
-    [SerializeField] float lifeTime = 15f;
+    bool collected = false;
 
-    [Header("Path")] // will always be the objects tranform
-
-   // [SerializeField] Transform startingPos;
-   // [SerializeField] Transform endingPos;
+   
 
     [Header("Floating Text")]
     [SerializeField] GameObject floatingText;
     [SerializeField] string promptMessage = "BAIT!";
-    [SerializeField] float textBobSpeed = 0f;
-    [SerializeField] float textBobHeight = 0f;
-
-    Vector3 moveDirection;
-    float baseY;
-    bool collected = false;
-    float spawnTime;
-    Transform floatingtext;
-
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
-        spawnTime = Time.time;
-
-        moveDirection = transform.forward;
-
-        baseY = transform.position.y;
-
-
-        SetupFloatingText();
-
+        Collider col = GetComponent<Collider>();
+        if (col != null && !col.isTrigger)
+            col.isTrigger = true;
 
 
     }
@@ -54,34 +30,14 @@ public class baitCatch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (collected) return;
-
-       
-        transform.position += moveDirection * flySpeed * Time.deltaTime;
-
-       
-
-        if (Time.time - spawnTime > lifeTime)
-        {
-            Destroy(gameObject);
-        }
-
-
-        Vector3 textPos = floatingText.transform.position;          // There is a problem where the player is becoming undefined or something, gonna have to fix that somewhere.
-                                                                    // Something in here is taking off the player's tag, and making it undefined somehow 
-
-        textPos.y = 1.5f + Mathf.Sin(Time.time * textBobSpeed) * textBobHeight;
-        floatingtext.localPosition = textPos;
-
-        if(Time.time - spawnTime > lifeTime)
-        {
-            Debug.Log(" Bait pickup expired!");
-            Destroy(gameObject);
-        }
+        
     }
 
     void OnTriggerEnter(Collider other)
     {
+
+        Debug.Log("Something hit me : " + other.gameObject.name);
+
         //audio boatSounds
 
         if (collected) return;
@@ -110,14 +66,6 @@ public class baitCatch : MonoBehaviour
 
     }
 
-    void SetupFloatingText()
-    {
-        TMP_Text text = GetComponentInChildren<TMP_Text>();
-        if (text != null)
-        {
-            text.text = promptMessage;
-            floatingtext = text.transform;
-        }
-    }
+ 
    
 }
