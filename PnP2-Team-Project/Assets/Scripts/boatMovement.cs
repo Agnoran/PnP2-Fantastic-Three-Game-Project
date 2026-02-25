@@ -127,7 +127,7 @@ public class boatMovement : MonoBehaviour
 
         // Debug to see what inputs are going through or not
 
-        Debug.Log($"Move: {moveInput}, Turn: {turnInput}, Vel: {rb.linearVelocity.magnitude}, IsKinematic: {rb.isKinematic}");
+      //  Debug.Log($"Move: {moveInput}, Turn: {turnInput}, Vel: {rb.linearVelocity.magnitude}, IsKinematic: {rb.isKinematic}");
 
         //if (Input.GetKeyDown(KeyCode.Q))
         //    cycleBait(-1);
