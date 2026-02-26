@@ -7,7 +7,8 @@ public class FishingSpot : MonoBehaviour
     // actual fish available to be fished, or catch from the spot(s)
     [Tooltip("What types of fish can be caught here")]
     public string[] availableFish = { "Bass", "Trout" };
-    [SerializeField] FishDefinition[] availableFishies;
+    //can i public this
+    [SerializeField] public  FishDefinition[] availableFishies;
     // how rare are the fish
     [Tooltip("How rare are catches here? 0 = common, 1 = uncommon, 2  = legendary ")]
     [Range(0f,2f)]
