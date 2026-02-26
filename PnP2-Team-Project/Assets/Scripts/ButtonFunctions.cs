@@ -49,6 +49,10 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void CutTheLine()
     {
+        //if (Fishing.instance != null)
+        //{
+        //    Fishing.instance.RunCutLine();
+        //}
         if (WorldController.instance == null) return;
         WorldController.instance.CutTheLine();
     }
