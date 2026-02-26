@@ -542,6 +542,156 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1657036734283122401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3751830561928143669}
+  - component: {fileID: 8998382562431279920}
+  - component: {fileID: 7463968040305866607}
+  m_Layer: 5
+  m_Name: Fish
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3751830561928143669
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657036734283122401}
+  m_LocalRotation: {x: -0, y: -0, z: -0.15550853, w: 0.9878346}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.0080925, y: 1.0080925, z: 1.0080925}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8055813439664724688}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -17.893}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 790.00006, y: 0.000023993594}
+  m_SizeDelta: {x: 194.6696, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8998382562431279920
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657036734283122401}
+  m_CullTransparentMesh: 1
+--- !u!114 &7463968040305866607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657036734283122401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 058e2fa31da9f1e41b551ae77659be09, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!1 &2284633682588755886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5863160898612180597}
+  - component: {fileID: 7206567471618224343}
+  - component: {fileID: 6034884445808999934}
+  m_Layer: 5
+  m_Name: Fish Lost Zone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5863160898612180597
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2284633682588755886}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.0080925, y: 1.0080925, z: 1.0080925}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8055813439664724688}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 786, y: -475.0025}
+  m_SizeDelta: {x: 246.2155, y: 44.4446}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &7206567471618224343
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2284633682588755886}
+  m_CullTransparentMesh: 1
+--- !u!114 &6034884445808999934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2284633682588755886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.5943396, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &2956572383339144357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1239,7 +1389,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2215204695120647971
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1354,6 +1504,81 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &5058708432727234250
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5021742597544529893}
+  - component: {fileID: 2873810476625104343}
+  - component: {fileID: 4681675874387833210}
+  m_Layer: 5
+  m_Name: Fish Caught Zone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5021742597544529893
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5058708432727234250}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.0080925, y: 1.0080925, z: 1.0080925}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8055813439664724688}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 786.00006, y: 450.82452}
+  m_SizeDelta: {x: 246.2155, y: 67.3154}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2873810476625104343
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5058708432727234250}
+  m_CullTransparentMesh: 1
+--- !u!114 &4681675874387833210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5058708432727234250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.18201967, g: 0.4433962, b: 0.0020914965, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &6754050329704282795
 GameObject:
   m_ObjectHideFlags: 0
@@ -2518,9 +2743,29 @@ PrefabInstance:
     m_TransformParent: {fileID: 3242791501215153922}
     m_Modifications:
     - target: {fileID: 6116744749557558118, guid: 8ca650e8f57eb2441aa6dcf5ca619995, type: 3}
+      propertyPath: progLoss
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116744749557558118, guid: 8ca650e8f57eb2441aa6dcf5ca619995, type: 3}
+      propertyPath: fishDisplay
+      value: 
+      objectReference: {fileID: 1657036734283122401}
+    - target: {fileID: 6116744749557558118, guid: 8ca650e8f57eb2441aa6dcf5ca619995, type: 3}
+      propertyPath: fishLossLoc
+      value: 
+      objectReference: {fileID: 2284633682588755886}
+    - target: {fileID: 6116744749557558118, guid: 8ca650e8f57eb2441aa6dcf5ca619995, type: 3}
+      propertyPath: fishCatchLoc
+      value: 
+      objectReference: {fileID: 5058708432727234250}
+    - target: {fileID: 6116744749557558118, guid: 8ca650e8f57eb2441aa6dcf5ca619995, type: 3}
       propertyPath: parentCanvas
       value: 
       objectReference: {fileID: 3242791501215153922}
+    - target: {fileID: 6116744749557558118, guid: 8ca650e8f57eb2441aa6dcf5ca619995, type: 3}
+      propertyPath: difficultyMod
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8398795470376417022, guid: 8ca650e8f57eb2441aa6dcf5ca619995, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4787,6 +5032,24 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3242791501215153922}
     m_Modifications:
+    - target: {fileID: 577077788784423053, guid: bf98471e6ad4f664ab6d82213e0cc52d, type: 3}
+      propertyPath: m_text
+      value: 'Whoo! Time for Rod
+
+        to go on Vacation!'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2070549605288711111, guid: bf98471e6ad4f664ab6d82213e0cc52d, type: 3}
+      propertyPath: m_Name
+      value: Win Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 3073105503036521602, guid: bf98471e6ad4f664ab6d82213e0cc52d, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 40.5209
+      objectReference: {fileID: 0}
+    - target: {fileID: 3073105503036521602, guid: bf98471e6ad4f664ab6d82213e0cc52d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -34.419514
+      objectReference: {fileID: 0}
     - target: {fileID: 3969911882262831305, guid: bf98471e6ad4f664ab6d82213e0cc52d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -5095,6 +5358,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3242791501215153922}
     m_Modifications:
+    - target: {fileID: 270925547875967328, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.000015289
+      objectReference: {fileID: 0}
+    - target: {fileID: 270925547875967328, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -471
+      objectReference: {fileID: 0}
     - target: {fileID: 442004966612607664, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_Name
       value: FishingMenu
@@ -5125,11 +5396,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1308.531
+      value: 1921.5
       objectReference: {fileID: 0}
     - target: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 861.1727
+      value: 1077.4
       objectReference: {fileID: 0}
     - target: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5145,27 +5416,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99999976
       objectReference: {fileID: 0}
     - target: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.00069049717
       objectReference: {fileID: 0}
     - target: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -145.49998
+      value: 0.01487
       objectReference: {fileID: 0}
     - target: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -49
+      value: 0.010126
       objectReference: {fileID: 0}
     - target: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5177,7 +5448,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 0.079
       objectReference: {fileID: 0}
     - target: {fileID: 8169920427436916409, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -5193,7 +5464,16 @@ PrefabInstance:
       objectReference: {fileID: 7946161238706273337}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5021742597544529893}
+    - targetCorrespondingSourceObject: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5863160898612180597}
+    - targetCorrespondingSourceObject: {fileID: 2200790767251553128, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3751830561928143669}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f1106ddce2146443b3421094b93e03f, type: 3}
 --- !u!224 &8055813439664724688 stripped

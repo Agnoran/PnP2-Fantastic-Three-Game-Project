@@ -20,7 +20,7 @@ public class Minigame_LeftRight : MonoBehaviour
     //temp srlz field for how much constant HP increase. later this will be driven per-fish
     [SerializeField] float fishProgMod;
     [SerializeField] Image fishingHP;
-    float currentHP;
+    public float currentHP;
     
     //the spot you're SUPPOSED to hit during the skillcheck
     [SerializeField] Image hitField;
@@ -55,9 +55,10 @@ public class Minigame_LeftRight : MonoBehaviour
     {
 
         //modify difficulty values
-        setDifficulty();
-
-
+        
+        FishingPoleInstance curPole = Fishing.instance.playerBoat.getCurrRod();
+        progAdd = (int)curPole.RodDamagePower;
+        setDifficulty(curPole.RodControl);
 
         //set slider components
         sliderPos = slider.rectTransform.position;
@@ -117,6 +118,7 @@ public class Minigame_LeftRight : MonoBehaviour
 
         //add base progress
         currentHP += fishProgMod;
+        Fishing.instance.UpdateFishLocation(currentHP);
     }
 
     //logic for a passing/failing quicktime press
@@ -190,7 +192,7 @@ public class Minigame_LeftRight : MonoBehaviour
     }
 
 
-    public void setDifficulty()
+    public void setDifficulty(float control)
     {
         float fDifficulty = 1;
         //float fDifficulty = Fishing.instance.calcDifficulty();
@@ -198,8 +200,9 @@ public class Minigame_LeftRight : MonoBehaviour
 
 
 
-        sliderTravelSpeed *= fDifficulty;
+        sliderTravelSpeed *= (fDifficulty - (control * Fishing.instance.DifficultyMod));
         hitField.rectTransform.sizeDelta = new Vector2(100 - (16 * fDifficulty), 100);
-    }
 
+        progSub = fDifficulty * Fishing.instance.ProgLoss;
+    }
 }

@@ -15,8 +15,8 @@ MonoBehaviour:
   fishID: boot
   displayName: Boot
   type: 8
-  revealed: {fileID: 21300000, guid: 3b845a96cec770848b22b87814b152ca, type: 3}
-  silhouette: {fileID: 21300000, guid: 3b845a96cec770848b22b87814b152ca, type: 3}
+  revealed: {fileID: 21300000, guid: 31081a13462e06948b6a8eb604203930, type: 3}
+  silhouette: {fileID: 21300000, guid: 31081a13462e06948b6a8eb604203930, type: 3}
   spawnWeight: 4
   sizeMin: 0.2
   sizeMax: 0.5
