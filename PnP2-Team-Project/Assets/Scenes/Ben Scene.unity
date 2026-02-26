@@ -637,6 +637,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boat Shop
       objectReference: {fileID: 0}
+    - target: {fileID: 6854632839123195530, guid: a6d5f5aae21a24f48917fd120b66d1c0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -959,6 +963,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4775858526697235075, guid: d6c76db0745d26840b5ca1a40d6cf7d7, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 905310732}
+    - target: {fileID: 4868592258370580346, guid: d6c76db0745d26840b5ca1a40d6cf7d7, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 905310732}

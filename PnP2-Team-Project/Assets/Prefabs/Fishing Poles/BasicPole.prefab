@@ -47,7 +47,7 @@ MonoBehaviour:
   baseStats: {fileID: 11400000, guid: 90d04395c4debab4a8ed48ffc3207528, type: 2}
   lineHealthMax: 25
   rodHealthMax: 50
-  rodDamagePower: 20
+  rodDamagePower: 60
   rodLuck: 5
   rodControl: 1
   lineHealthCurrent: 25

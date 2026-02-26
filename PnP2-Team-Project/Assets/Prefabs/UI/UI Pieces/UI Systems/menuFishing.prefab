@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4393474276240966033
 RectTransform:
   m_ObjectHideFlags: 0
@@ -324,10 +324,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Minigame_LeftRight
   progAdd: 200
-  progSub: 400
+  progSub: 238
   progHP: 1000
   fishProgMod: -0.3
   fishingHP: {fileID: 3421086697955392795}
+  currentHP: 0
   hitField: {fileID: 6766547960896717929}
   slider: {fileID: 959261805308686059}
   sliderTravelSpeed: 800
