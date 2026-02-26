@@ -20,7 +20,7 @@ public class Minigame_LeftRight : MonoBehaviour
     //temp srlz field for how much constant HP increase. later this will be driven per-fish
     [SerializeField] float fishProgMod;
     [SerializeField] Image fishingHP;
-    float currentHP;
+    public float currentHP;
     
     //the spot you're SUPPOSED to hit during the skillcheck
     [SerializeField] Image hitField;
@@ -29,7 +29,7 @@ public class Minigame_LeftRight : MonoBehaviour
     //the image that slides along the bar for the skillcheck
     [SerializeField] Image slider;
     //how quickly the slider moves back and forth
-    [SerializeField] int sliderTravelSpeed;
+    [SerializeField] float sliderTravelSpeed;
     //original slider color 
     Color sliderColorOrig;
     //original slider position
@@ -55,9 +55,10 @@ public class Minigame_LeftRight : MonoBehaviour
     {
 
         //modify difficulty values
-        setDifficulty();
-
-
+        
+        FishingPoleInstance curPole = Fishing.instance.playerBoat.getCurrRod();
+        progAdd = (int)curPole.RodDamagePower;
+        setDifficulty(curPole.RodControl);
 
         //set slider components
         sliderPos = slider.rectTransform.position;
@@ -113,6 +114,7 @@ public class Minigame_LeftRight : MonoBehaviour
 
         //add base progress
         currentHP += fishProgMod;
+        Fishing.instance.UpdateFishLocation(currentHP);
     }
 
     //logic for a passing/failing quicktime press
@@ -186,7 +188,7 @@ public class Minigame_LeftRight : MonoBehaviour
     }
 
 
-    public void setDifficulty()
+    public void setDifficulty(float control)
     {
         FishType type = WorldController.instance.fishToAttempt.Type;
         if (type == FishType.Shark || type == FishType.Treasure) { fDifficulty = 3; }
@@ -194,8 +196,9 @@ public class Minigame_LeftRight : MonoBehaviour
         else if (type == FishType.Trout) { fDifficulty = 2; }
         else { fDifficulty = 1; }
 
-        sliderTravelSpeed *= fDifficulty;
+        sliderTravelSpeed *= (fDifficulty - (control * Fishing.instance.DifficultyMod));
         hitField.rectTransform.sizeDelta = new Vector2(100 - (16 * fDifficulty), 100);
-    }
 
+        progSub = fDifficulty * Fishing.instance.ProgLoss;
+    }
 }

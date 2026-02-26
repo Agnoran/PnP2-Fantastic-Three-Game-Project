@@ -11,8 +11,16 @@ public class Fishing : MonoBehaviour
 
     GameObject minigame;
     [SerializeField] Transform parentCanvas;
+    [SerializeField] GameObject fishDisplay;
+    [SerializeField] GameObject fishCatchLoc;
+    [SerializeField] GameObject fishLossLoc;
 
-
+    [SerializeField] GameObject player;
+    public playerBoat playerBoat;
+    [SerializeField] public float difficultyMod;
+    public float DifficultyMod => difficultyMod;
+    [SerializeField] public int progLoss;
+    public int ProgLoss => progLoss;
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -26,12 +34,14 @@ public class Fishing : MonoBehaviour
     public void startFishing()
     {
         destroyGame();
+        playerBoat = player.GetComponent<playerBoat>();
 
         minigame = Instantiate(minigame_LeftRight);
         minigame.transform.SetParent(parentCanvas, true);
 
-        //future: 
-        //get fish type, pick appropriate game
+        // TODO JUNE:
+        // grab fish instance from worldController
+        // update fish display text(s) with fish info (type, difficulty, etc)
     }
 
 
@@ -44,4 +54,10 @@ public class Fishing : MonoBehaviour
         }
 
     }
+    public void UpdateFishLocation(float amount)
+    {
+        // float difference = (fishCatchLoc.transform.position.y + fishLossLoc.transform.position.y);
+        fishDisplay.transform.position = new Vector2(fishDisplay.transform.position.x, fishLossLoc.transform.position.y + amount);
+    }
+
 }
