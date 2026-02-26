@@ -49,6 +49,10 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void CutTheLine()
     {
+        //if (Fishing.instance != null)
+        //{
+        //    Fishing.instance.RunCutLine();
+        //}
         if (WorldController.instance == null) return;
         WorldController.instance.CutTheLine();
     }
@@ -62,5 +66,52 @@ public class ButtonFunctions : MonoBehaviour
     {
         if(WorldController.instance == null) return;
         WorldController.instance.StateCloseCatalogue();
+    }
+
+    // Shop Buttons
+    public void OpenGlobalShop()
+    {
+        if(WorldController.instance == null) return;
+        if (WorldController.instance.IsMenuOpen()) return;
+        if (WorldController.instance.GlobalShopUnlocked && WorldController.instance.GlobalShop != null)
+        {
+            ShopUI.instance.Open(WorldController.instance.GlobalShop);
+        }
+    }
+    public void OpenLocalShop()
+    {
+        if(WorldController.instance == null) return;
+        if (WorldController.instance.IsMenuOpen()) return;
+        if (WorldController.instance.ActiveLocalShop == null) { return; }
+
+
+        ShopUI.instance.Open(WorldController.instance.ActiveLocalShop);
+    }
+    public void CloseShop()
+    {
+        if (WorldController.instance == null) return;
+        WorldController.instance.StateCloseShop();
+    }
+    public void SellAllFish()
+    {
+        if (ShopUI.instance == null)
+            return;
+
+        ShopUI.instance.SellAllFish();
+    }
+    public void StartGame()
+    {
+        if(WorldController.instance == null) return;
+        WorldController.instance.StateStartGame();
+    }
+    public void BeginTutorial()
+    {
+        if (WorldController.instance == null) return;
+        WorldController.instance.StateTutorialOne();
+    }
+    public void ContinueTutorial()
+    {
+        if (WorldController.instance == null) return;
+        WorldController.instance.StateTutorialTwo();
     }
 }

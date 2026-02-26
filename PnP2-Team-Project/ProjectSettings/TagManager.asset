@@ -5,9 +5,13 @@ TagManager:
   serializedVersion: 3
   tags:
   - sliderCube_LeftRight
+<<<<<<< HEAD
   - info-chunk-title
   - info-chunk-value
   - info-chunk-obfuscator
+=======
+  - FishingSpot
+>>>>>>> Ben
   layers:
   - Default
   - TransparentFX

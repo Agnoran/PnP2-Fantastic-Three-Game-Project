@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c026681462ce5942962982aa78233f3, type: 3}
+  m_Name: +1.5 Boat Speed
+  m_EditorClassIdentifier: Assembly-CSharp::ShopItem
+  displayName: Boat Speed Upgrade
+  description: Upgrade your boat's speed
+  icon: {fileID: 0}
+  price: 450
+  quantity: 3
+  allowedCategories: 
+  itemType: 2
+  itemPrefab: {fileID: 0}
+  upgradeDefinition: {fileID: 11400000, guid: 325203c2c45c3d54481570b6309e24d6, type: 2}

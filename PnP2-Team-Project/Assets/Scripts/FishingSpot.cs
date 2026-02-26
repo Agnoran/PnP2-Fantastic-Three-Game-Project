@@ -42,27 +42,137 @@ public class FishingSpot : MonoBehaviour
 
     public FishInstance GenerateFishToAttempt()
     {
-        int amountOfTypes = 0;
+        if (availableFishies == null || availableFishies.Length == 0)
+            return null;
+
+        float totalWeight = 0f;
+
         for (int i = 0; i < availableFishies.Length; i++)
         {
-            amountOfTypes++;
+            FishDefinition fish = availableFishies[i];
+            if (fish == null)
+                continue;
+
+            float w = Mathf.Max(0f, fish.SpawnWeight);
+            totalWeight += w;
         }
 
-        // choice will include weight values in the future when we have them, for now it's just random
-        int choice = Random.Range(0, amountOfTypes);
+        if (totalWeight <= 0f)
+            return null;
 
+        float roll = Random.Range(0f, totalWeight);
 
-        FishDefinition chosenFish = availableFishies[choice];
-        float rolledSize = Random.Range(
-            chosenFish.SizeMin,
-            chosenFish.SizeMax
-        );
+        FishDefinition chosenFish = null;
+
+        for (int i = 0; i < availableFishies.Length; i++)
+        {
+            FishDefinition fish = availableFishies[i];
+            if (fish == null)
+                continue;
+
+            roll -= Mathf.Max(0f, fish.SpawnWeight);
+
+            if (roll <= 0f)
+            {
+                chosenFish = fish;
+                break;
+            }
+        }
+
+        if (chosenFish == null)
+        {
+            for (int i = availableFishies.Length - 1; i >= 0; i--)
+            {
+                if (availableFishies[i] != null)
+                {
+                    chosenFish = availableFishies[i];
+                    break;
+                }
+            }
+
+            if (chosenFish == null)
+                return null;
+        }
+
+        float rolledSize = Random.Range(chosenFish.SizeMin, chosenFish.SizeMax);
         int rolledQuality = Random.Range(0, 100);
-        //int rolledValue = Mathf.RoundToInt(chosenFish.BaseValue * (1 + (rolledQuality / 100f)) * (1 + (rolledSize / chosenFish.SizeMax)));
-        int rolledValue = chosenFish.BaseValue;
-        float rolledSpoilTimeSeconds = chosenFish.BaseSpoilTime * (1 + (rolledQuality / 100f));
+
+        float qualityMultiplier = 1f + (rolledQuality / 100f);
+        float sizeMultiplier = 1f + (rolledSize / Mathf.Max(0.0001f, chosenFish.SizeMax));
+
+        int rolledValue = Mathf.RoundToInt(chosenFish.BaseValue * qualityMultiplier * sizeMultiplier);
+
+        float rolledSpoilTimeSeconds = chosenFish.BaseSpoilTime;
 
         return new FishInstance(chosenFish, rolledSize, rolledQuality, rolledValue, rolledSpoilTimeSeconds);
+    }
+    public FishInstance GenerateFishToAttempt(float rodLuckBonus)
+    {
+        if (availableFishies == null || availableFishies.Length == 0)
+            return null;
+
+        float totalWeight = 0f;
+
+        for (int i = 0; i < availableFishies.Length; i++)
+        {
+            FishDefinition fish = availableFishies[i];
+            if (fish == null)
+                continue;
+
+            float w = Mathf.Max(0f, fish.SpawnWeight);
+            totalWeight += w;
+        }
+
+        if (totalWeight <= 0f)
+            return null;
+
+        float roll = Random.Range(0f, totalWeight);
+
+        FishDefinition chosenFish = null;
+
+        for (int i = 0; i < availableFishies.Length; i++)
+        {
+            FishDefinition fish = availableFishies[i];
+            if (fish == null)
+                continue;
+
+            roll -= Mathf.Max(0f, fish.SpawnWeight);
+
+            if (roll <= 0f)
+            {
+                chosenFish = fish;
+                break;
+            }
+        }
+
+        if (chosenFish == null)
+        {
+            for (int i = availableFishies.Length - 1; i >= 0; i--)
+            {
+                if (availableFishies[i] != null)
+                {
+                    chosenFish = availableFishies[i];
+                    break;
+                }
+            }
+
+            if (chosenFish == null)
+                return null;
+        }
+
+        float rolledSize = Random.Range(chosenFish.SizeMin, chosenFish.SizeMax);
+
+        int rolledQuality = Random.Range(0, 100);
+        int finalQuality = Mathf.Clamp(Mathf.RoundToInt(rolledQuality + rodLuckBonus), 0, 100);
+
+        float qualityMultiplier = 1f + (finalQuality / 100f);
+        float sizeMultiplier = 1f + (rolledSize / Mathf.Max(0.0001f, chosenFish.SizeMax));
+
+        int rolledValue = Mathf.RoundToInt(chosenFish.BaseValue * qualityMultiplier * sizeMultiplier);
+
+        float rolledSpoilTimeSeconds = chosenFish.BaseSpoilTime;
+
+        return new FishInstance(chosenFish, rolledSize, finalQuality, rolledValue, rolledSpoilTimeSeconds);
     }
 
     private void OnTriggerEnter(Collider other)

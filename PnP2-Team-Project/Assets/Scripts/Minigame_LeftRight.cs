@@ -11,7 +11,7 @@ public class Minigame_LeftRight : MonoBehaviour
 
     [Header("Minigame Tuning")]
     //how much progress a successful quicktime hit will inject into the fishing HP
-    [Min(0)]
+    //[Min(0)]
     [SerializeField] int progAdd;
     //how much progress an unsuccessful quicktime hit will inject into the fishing HP
     [SerializeField] int progSub;
@@ -46,12 +46,16 @@ public class Minigame_LeftRight : MonoBehaviour
     //this changes to be the left or right target
     Vector2 v2Target;
 
+    [SerializeField] GameObject fish_updown;
+    [SerializeField] GameObject fishingWin;
+    [SerializeField] GameObject fishingLoss;
+
 
     void Start()
     {
 
         //modify difficulty values
-        
+        setDifficulty();
 
 
 
@@ -188,10 +192,11 @@ public class Minigame_LeftRight : MonoBehaviour
 
     public void setDifficulty()
     {
-        float fDifficulty = Fishing.instance.calcDifficulty();
+        float fDifficulty = 1;
+        //float fDifficulty = Fishing.instance.calcDifficulty();
 
-        
-       
+
+
 
         sliderTravelSpeed *= fDifficulty;
         hitField.rectTransform.sizeDelta = new Vector2(100 - (16 * fDifficulty), 100);
