@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using UnityEditorInternal;
 
 // June Minigame
 public class Minigame_LeftRight : MonoBehaviour
